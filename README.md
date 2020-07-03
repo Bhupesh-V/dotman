@@ -1,11 +1,11 @@
-<h1 align="center">sample-project</h1>
+<h1 align="center">d○tman</h1>
 <p align="center">
 <!--  <img src="" />-->
-  <a href="https://github.com/Bhupesh-V/sample-project/blob/master/LICENSE">
-    <img alt="License: MIT" src="https://img.shields.io/github/license/Bhupesh-V/sample-project" target="_blank" />
+  <a href="https://github.com/Bhupesh-V/dotman/blob/master/LICENSE">
+    <img alt="License: MIT" src="https://img.shields.io/github/license/Bhupesh-V/dotman" target="_blank" />
   </a>
-  <a href="https://github.com/Bhupesh-V/sample-project/issues">
-    <img alt="Issues" src="https://img.shields.io/github/issues/Bhupesh-V/sample-project?color=blueviolet" />
+  <a href="https://github.com/Bhupesh-V/dotman/issues">
+    <img alt="Issues" src="https://img.shields.io/github/issues/Bhupesh-V/dotman?color=blueviolet" />
   </a>
   <a href="">
     <img alt="Website Status" src="https://img.shields.io/website?down_color=red&down_message=down&up_color=darkgreen&up_message=up&url=https%3A%2F%2Fwebsite.com" />
@@ -15,9 +15,17 @@
   </a>
 </p>
 
-> This is a template repository used for creating side-projects.
+> My personal (dot)file (man)ager.
 
+## Installation
 
+**wget**
+```bash
+```
+
+**curl**
+```bash
+```
 
 ## Author
 
@@ -30,7 +38,7 @@
 
 ## ☺️ Show your support
 
-Support me by giving a ⭐️ if this project helped you! or just [![Twitter URL](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2FBhupesh-V%2Fsample-project%2F)](https://twitter.com/intent/tweet?url=https://github.com/Bhupesh-V/sample-project&text=sample-project%20via%20@bhupeshimself)
+Support me by giving a ⭐️ if this project helped you! or just [![Twitter URL](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2FBhupesh-V%2Fsample-project%2F)](https://twitter.com/intent/tweet?url=https://github.com/Bhupesh-V/dotman&text=dotman%20via%20@bhupeshimself)
 
 <a href="https://www.patreon.com/bhupesh">
   <img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160">
@@ -39,7 +47,7 @@ Support me by giving a ⭐️ if this project helped you! or just [![Twitter URL
 ## 📝 License
 
 Copyright © 2020 [Bhupesh Varshney](https://github.com/Bhupesh-V).<br />
-This project is [MIT](https://github.com/Bhupesh-V/sample-project/blob/master/LICENSE) licensed.
+This project is [MIT](https://github.com/Bhupesh-V/dotman/blob/master/LICENSE) licensed.
 
 ## 👋 Contributing
 
