@@ -2,66 +2,71 @@
 
 # (.dot)file (man)ager
 
-# Depedencies
-	# 1. Bash >= 4
-	# 2. Git
-	# 3. curl
-
 IFS=$'\n'
 # set these 2 as env variables
-DOT_DIR=""
+DOT_DEST=""
 DOT_REPO="https://github.com/Bhupesh-V/.Varshney.git"
 
 DOT_REPO_NAME=$(basename ${DOT_REPO})
 
-echo "dotfiles folder path: ${HOME}/${DOT_DIR}"
+echo "dotfiles folder path: ${HOME}/${DOT_DEST}"
 
 init(){
-	if [ -d "${HOME}/${DOT_DIR}/${DOT_REPO_NAME}" ]
+	if [ -d "${HOME}/${DOT_DEST}/${DOT_REPO_NAME}" ]
 	then
 	    echo -e "Found ${DOT_REPO_NAME} as a dotfile repo"
 	else
-	    echo -e "${DOT_REPO_NAME} not present inside path ${HOME}/${DOT_DIR}\n
-	    Consider Changing current working directory"
+	    echo -e "${DOT_REPO_NAME} not present inside path ${HOME}/${DOT_DEST}.\n
+	    Consider changing current working directory"
 	fi
 }
 
 find_dotfiles() {
-	mapfile -t dotfiles < <( find . -maxdepth 1 -name ".*" -type f )
+	mapfile -t dotfiles < <( find "${HOME}" -maxdepth 1 -name ".*" -type f )
 	printf '%s\n' "${dotfiles[@]}"
 }
 
 setup_config() {
-	echo -e "\n\nSet Up d○tman"
-	echo -e "............."
+	cat << "LOGO"
+
+      _       _                         
+     | |     | |                        
+   __| | ___ | |_ _ __ ___   __ _ _ __  
+  / _` |/ _ \| __| '_ ` _ \ / _` | '_ \ 
+ | (_| | (_) | |_| | | | | | (_| | | | |
+  \__,_|\___/ \__|_| |_| |_|\__,_|_| |_|
+                                        
+
+LOGO
+
+	echo -e "\n\nFirst time startup, Set Up d○tman"
+	echo -e ".................................\n"
 	read -p "⚪ Enter dotfiles repository URL : " -r DOT_REPO
 	echo -e "\n Checking URL ..."
-	isValidURL=$(curl -IsS --silent -o /dev/null -w '%{http_code}' ${DOT_REPO})
+	isValidURL=$(curl -IsS --silent -o /dev/null -w '%{http_code}' "${DOT_REPO}")
 
 	if [[ $isValidURL == 200 ]]
 	then
+		read -p "⚪ Where should I store $(basename "${DOT_REPO}") : " -r DOT_DEST
+		# clone the repo in the directory entered
+		echo -e "\nCalling 📞 Git ..."
+		# git clone "${DOT_REPO} ${DOT_DEST}"
+		echo -e "\nExporting env variables..."
+
 		return
 	else
 		echo -e "\n(❌) $DOT_REPO Unavailable"
 		exit
 	fi
-	check if DOT_REPO is URL
-	read -p "⚪ Where should I clone $(basename "${DOT_REPO}"), Enter Directory Name : " -r DOT_DIR
 }
 
 config_check() {
 	# check if env variables are set
-	if [[ -z "${DOT_DIR}" ]] && [[ -z "${DOT_REPO}" ]] 
+	if [[ -z "${DOT_DEST}" ]] && [[ -z "${DOT_REPO}" ]] 
 	then
 	    return
 	else
-		read -p "Want to setup dotman configs ? (y/N) " -n 1 -r REPLY
-	    case $REPLY in
-	     [yY]* ) setup_config
-	             return;;
-	     [nN]* ) return;;
-	     * )     echo -e "\nInvalid Input, Exiting d○tman 🙄";;
-	  esac
+		setup_config
 	fi
 }
 
@@ -73,3 +78,5 @@ find_dotfiles
 # {3} : run git and ask user to push.
 # {4} : Find all dot files
 # {5} : Set dotman as alias to the script
+# {6} : Pimp up prompts
+# {7} : Check for updates in dotman
