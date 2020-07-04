@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # (.dot)file (man)ager
-
+set +x
 IFS=$'\n'
 # set these 2 as env variables
 DOT_DEST=""

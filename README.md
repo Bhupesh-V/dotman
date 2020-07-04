@@ -14,12 +14,30 @@
   </a>
 </p>
 
+<pre align="center">
+<b>
+      _       _                         
+     | |     | |                        
+   __| | ___ | |_ _ __ ___   __ _ _ __  
+  / _` |/ _ \| __| '_ ` _ \ / _` | '_ \ 
+ | (_| | (_) | |_| | | | | | (_| | | | |
+  \__,_|\___/ \__|_| |_| |_|\__,_|_| |_|
+<b>
+</pre>
+
 <blockquote>
   <p align="center">
     d○tman is a single file (dot)file (man)ager
   </p>
 </blockquote>
 
+<code>
+  <p align="center">
+    <h3 align="center">
+    <a href="">✨ Learn how I made dotman from scratch ✨</a>
+    </h3>
+  </p>
+</code>
 
 ## Features
 
