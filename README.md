@@ -1,5 +1,9 @@
 <h1 align="center">d○tman</h1>
+
 <p align="center">
+  <a href="https://github.com/Bhupesh-V/dotman/actions">
+    <img alt="Lint" src="https://github.com/Bhupesh-V/dotman/workflows/Lint/badge.svg?branch=master">
+  </a>
   <a href="https://github.com/Bhupesh-V/dotman/blob/master/LICENSE">
     <img alt="License: MIT" src="https://img.shields.io/github/license/Bhupesh-V/dotman" target="_blank" />
   </a>

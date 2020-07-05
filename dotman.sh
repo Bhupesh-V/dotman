@@ -13,7 +13,7 @@ DOT_REPO="https://github.com/Bhupesh-V/.Varshney.git"
 
 DOT_REPO_NAME=$(basename ${DOT_REPO})
 BOSS_NAME=$LOGNAME
-# this is called a "here document"
+# this is called a "here document ? heh?"
 DOTMAN_LOGO=$(cat << "LOGO"
 
       _       _                         
@@ -52,7 +52,7 @@ find_dotfiles() {
 }
 
 initial_setup() {
-	echo -e "\n\nFirst time startup 🔥, Set Up $(tput bold)d○tman$(tput sgr0)"
+	echo -e "\n\nFirst time use 🔥, Set Up $(tput bold)d○tman$(tput sgr0)"
 	echo -e "....................................\n"
 	read -p "⚪ Enter dotfiles repository URL : " -r DOT_REPO
 	printf "\n%s%s" "$(tput bold)Checking URL ..." "$(tput sgr0)"
@@ -61,12 +61,13 @@ initial_setup() {
 	if [[ $isValidURL == 200 ]]
 	then
 		printf "\r"
-		read -p "⚪ Where should I clone $(tput bold)$(basename "${DOT_REPO}")$(tput sgr0) : " -r DOT_DEST
-		if [[ -d $DOT_DEST ]]
+		read -p "⚪ Where should I clone $(tput bold)$(basename "${DOT_REPO}")$(tput sgr0) (${HOME}/..): " -r DOT_DEST
+		DOT_DEST=${DOT_DEST:-$HOME}
+		if [[ -d "$HOME/$DOT_DEST" ]]
 		then
+			printf "\n%s\r\n" "$(tput bold)Calling 📞 Git ... $(tput sgr0)"
 			# clone the repo in the directory entered
-			printf "\n%s""$(tput bold)Calling 📞 Git ... $(tput sgr0)"
-			#git clone "${DOT_REPO} ${DOT_DEST}"
+			git -C "${HOME}/${DOT_DEST}" clone "${DOT_REPO}"
 			echo -e "\nExporting env variables..."
 			echo -e "\n[✔️ ] dotman successfully configured "
 			goodbye
@@ -92,7 +93,6 @@ config_check() {
 
 manage() {
 	echo -e "\n[1] Show diff"
-	#  diff -u --suppress-common-lines --color file1.sh file2.sh
 	echo -e "[2] Push dotfiles to VCS Host"
 	echo -e "[3] Pull latest changes from VCS Host"
 	echo -e "[4] List all dotfiles"
@@ -110,28 +110,41 @@ manage() {
 		[4]* ) printf "\n"
 			   find_dotfiles 
 			 return;;
-		* )     printf "\n${RB_YELLOW}${BOLD}Invalid Input 🙄, Exiting d○tman${RESET}\n";;
+		* )     printf "\n%s\n" "[❌]Invalid Input 🙄, Exiting $(tput bold)d○tman$(tput sgr0)";;
 	esac
 }
 
 goodbye() {
-	printf "\n\n%s" "$(tput bold)Thanks for using d○tman.$(tput sgr0)"
+	printf "\a\n\n%s\n" "$(tput bold)Thanks for using d○tman 🖖.$(tput sgr0)"
 	printf "\n%s%s" "$(tput bold)Follow $(tput setab 45)$(tput setaf 0)@bhupeshimself$(tput sgr0)" "$(tput bold) on Twitter "
-	printf "for more updates.$(tput sgr0)\n"
+	printf "%s\n" "for more updates.$(tput sgr0)"
+	printf "%s\n" "$(tput bold)Report Bugs : $(tput smul)https://github.com/Bhupesh-V/dotman/issues$(tput rmul)$(tput sgr0)"
 }
 
-echo -e "\n\aHi $(tput bold)$(tput setaf 208)$BOSS_NAME$(tput sgr0) 👋"
-printf "%s" "$(tput bold)$(tput setaf 122)${DOTMAN_LOGO}$(tput sgr0)"
+intro() {
+	echo -e "\n\aHi $(tput bold)$(tput setaf 208)$BOSS_NAME$(tput sgr0) 👋"
+	printf "%s" "$(tput bold)$(tput setaf 122)${DOTMAN_LOGO}$(tput sgr0)"	
+}
 
+# WIP
+diff_check() {
+	mapfile -t dotfiles < <( find "${DOT_DEST}/${DOT_REPO_NAME}" -maxdepth 1 -name ".*" -type f )
+	for file in "${dotfiles[@]}"
+	do
+		diff -u --suppress-common-lines --color file1.sh file2.sh
+		echo "$file"
+	done
+}
 
-#config_check
-manage
+intro
+config_check
+#manage
 # find_dotfiles
 # TODO
 # {1} : If repo is present see if there is a difference between files inside the repo.
 # {2} : Copy changed files to the repo.
 # {3} : run git and ask user to push.
-# {4} : Find all dot files
+# {4} ✅: Find all dot files
 # {5} ✅ : Set dotman as alias to the script
-# {6} : Pimp up prompts
+# {6} ✅: Pimp up prompts
 # {7} : Check for updates in dotman
