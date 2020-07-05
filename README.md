@@ -22,57 +22,71 @@
   / _` |/ _ \| __| '_ ` _ \ / _` | '_ \ 
  | (_| | (_) | |_| | | | | | (_| | | | |
   \__,_|\___/ \__|_| |_| |_|\__,_|_| |_|
-<b>
+</b>
 </pre>
 
 <blockquote>
-  <p align="center">
-    d○tman is a single file (dot)file (man)ager
-  </p>
+  <h3 align="center">
+    d○tman is a simple (dot)file (man)ager
+  </h3>
 </blockquote>
 
 <code>
   <p align="center">
     <h3 align="center">
-    <a href="">✨ Learn how I made dotman from scratch ✨</a>
+    <a href="">✨ Learn how I made d○tman from scratch ✨</a>
     </h3>
   </p>
 </code>
 
-## Features
+## 🌠 Features
 
-* Single file.
-* No config file for dotman (🙅 `.dotrc`)
-* Extendable, _Available as a Template_.
+* Single file
+* No config file for dotman (No `.dotrc` 🤦)
+* No useless arguments (single command 😎)
+* Extendable ⚒, _Available as a Template_
 * Fewer Dependencies
   1. `Bash >= 4`
   2. `Git`
-  3. `curl`*
+  3. `curl`_*_
 
 
 ## Installation
 
-#### via curl
+#### via curl ➰
 
 ```shell
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/Bhupesh-v/dotman/master/install.sh)"
 ```
 
-#### via wget
+#### via wget 📥
 
 ```shell
 sh -c "$(wget -O- https://raw.githubusercontent.com/Bhupesh-v/dotman/master/install.sh)"
 ```
 
-**dotman** is installed by default in `/home/username/.dotman`
+> **dotman** is installed by default in `/home/username/.dotman`
+
+#### Manually ❓
+
+1. Just grab **dotman.sh** from [Releases 🔼](https://github.com/Bhupesh-V/dotman/releases) and store it anywhere on your system.
+2. Make it 🏃 executable.
+  ```bash
+  chmod +x dotman.sh
+  ```
+3. Set alias for dotman _(optional)_. 
+  ```bash
+  alias $(pwd)/dotman.sh=dotman
+  ```
 
 
 ## Usage
 
-No useless arguments. Just run 😎 **`dotman`** anywhere in your terminal.
+Just run **`dotman`** anywhere in your terminal 🖖.
 
 ```bash
 dotman
+# or ./dotman.sh if you installed manually
 ```
 Leave the rest to it.
 
