@@ -12,7 +12,8 @@ DOT_DEST=""
 DOT_REPO="https://github.com/Bhupesh-V/.Varshney.git"
 
 DOT_REPO_NAME=$(basename ${DOT_REPO})
-
+BOSS_NAME=$LOGNAME
+# this is called a "here document"
 DOTMAN_LOGO=$(cat << "LOGO"
 
       _       _                         
@@ -26,7 +27,39 @@ DOTMAN_LOGO=$(cat << "LOGO"
 LOGO
 )
 
-echo "dotfiles folder path: ${HOME}/${DOT_DEST}"
+if [ -t 1 ]; then
+  RB_RED=$(printf '\033[38;5;196m')
+  RB_ORANGE=$(printf '\033[38;5;202m')
+  RB_YELLOW=$(printf '\033[38;5;226m')
+  RB_GREEN=$(printf '\033[38;5;082m')
+  RB_BLUE=$(printf '\033[38;5;021m')
+  RB_INDIGO=$(printf '\033[38;5;093m')
+  RB_VIOLET=$(printf '\033[38;5;163m')
+
+  RED=$(printf '\033[31m')
+  GREEN=$(printf '\033[32m')
+  YELLOW=$(printf '\033[33m')
+  BLUE=$(printf '\033[34m')
+  BOLD=$(printf '\033[1m')
+  RESET=$(printf '\033[m')
+else
+  RB_RED=""
+  RB_ORANGE=""
+  RB_YELLOW=""
+  RB_GREEN=""
+  RB_BLUE=""
+  RB_INDIGO=""
+  RB_VIOLET=""
+
+  RED=""
+  GREEN=""
+  YELLOW=""
+  BLUE=""
+  BOLD=""
+  RESET=""
+fi
+
+# echo "dotfiles folder path: ${HOME}/${DOT_DEST}"
 
 init(){
 	if [ -d "${HOME}/${DOT_DEST}/${DOT_REPO_NAME}" ]
@@ -83,11 +116,26 @@ manage() {
 	echo -e "[4] List dotfiles"
 	# Default choice is [1]
 	read -p "What do you want me to do [1] : " -n 1 -r USER_INPUT
+	# See Parameter Expansion
 	USER_INPUT=${USER_INPUT:-1}
-	echo -e "\n${USER_INPUT}"
+	case $USER_INPUT in
+		[1]* ) echo -e "\ndiff"
+		     return;;
+		[2]* ) echo -e "\n Pushing dotfiles ..."
+		     return;;
+		[3]* ) echo -e "\n Pulling dotfiles ..."
+		     return;;
+		[4]* ) echo -e "\n Listing dotfiles ..." 
+			 return;;
+		* )     printf "\n${RB_YELLOW}${BOLD}Invalid Input 🙄, Exiting d○tman${RESET}\n";;
+	esac
 }
 
-echo -e "${DOTMAN_LOGO}"
+
+#printf "\aHi ${RB_YELLOW}$BOSS_NAME${RESET} 👋"
+echo -e "\n\aHi $BOSS_NAME 👋"
+printf "${RB_GREEN}${BOLD}${DOTMAN_LOGO}${RESET}\n"
+
 #config_check
 manage
 # find_dotfiles
