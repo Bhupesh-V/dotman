@@ -27,38 +27,13 @@ DOTMAN_LOGO=$(cat << "LOGO"
 LOGO
 )
 
-if [ -t 1 ]; then
-  RB_RED=$(printf '\033[38;5;196m')
-  RB_ORANGE=$(printf '\033[38;5;202m')
-  RB_YELLOW=$(printf '\033[38;5;226m')
-  RB_GREEN=$(printf '\033[38;5;082m')
-  RB_BLUE=$(printf '\033[38;5;021m')
-  RB_INDIGO=$(printf '\033[38;5;093m')
-  RB_VIOLET=$(printf '\033[38;5;163m')
+# function called by trap
+catch_ctrlc() {
+    goodbye
+    exit
+}
 
-  RED=$(printf '\033[31m')
-  GREEN=$(printf '\033[32m')
-  YELLOW=$(printf '\033[33m')
-  BLUE=$(printf '\033[34m')
-  BOLD=$(printf '\033[1m')
-  RESET=$(printf '\033[m')
-else
-  RB_RED=""
-  RB_ORANGE=""
-  RB_YELLOW=""
-  RB_GREEN=""
-  RB_BLUE=""
-  RB_INDIGO=""
-  RB_VIOLET=""
-
-  RED=""
-  GREEN=""
-  YELLOW=""
-  BLUE=""
-  BOLD=""
-  RESET=""
-fi
-
+trap 'catch_ctrlc' SIGINT
 # echo "dotfiles folder path: ${HOME}/${DOT_DEST}"
 
 init(){
@@ -77,23 +52,30 @@ find_dotfiles() {
 }
 
 initial_setup() {
-	echo -e "\n\nFirst time startup, Set Up d○tman"
-	echo -e ".................................\n"
+	echo -e "\n\nFirst time startup 🔥, Set Up $(tput bold)d○tman$(tput sgr0)"
+	echo -e "....................................\n"
 	read -p "⚪ Enter dotfiles repository URL : " -r DOT_REPO
-	echo -e "\n Checking URL ..."
+	printf "\n%s%s" "$(tput bold)Checking URL ..." "$(tput sgr0)"
+	
 	isValidURL=$(curl -IsS --silent -o /dev/null -w '%{http_code}' "${DOT_REPO}")
-
 	if [[ $isValidURL == 200 ]]
 	then
-		read -p "⚪ Where should I store $(basename "${DOT_REPO}") : " -r DOT_DEST
-		# clone the repo in the directory entered
-		echo -e "\n Calling 📞 Git ..."
-		# git clone "${DOT_REPO} ${DOT_DEST}"
-		echo -e "\nExporting env variables..."
-
-		return
+		printf "\r"
+		read -p "⚪ Where should I clone $(tput bold)$(basename "${DOT_REPO}")$(tput sgr0) : " -r DOT_DEST
+		if [[ -d $DOT_DEST ]]
+		then
+			# clone the repo in the directory entered
+			printf "\n%s""$(tput bold)Calling 📞 Git ... $(tput sgr0)"
+			#git clone "${DOT_REPO} ${DOT_DEST}"
+			echo -e "\nExporting env variables..."
+			echo -e "\n[✔️ ] dotman successfully configured "
+			goodbye
+		else
+			echo -e "\n[❌] $DOT_DEST Not a Valid directory"
+		fi
+		exit
 	else
-		echo -e "\n(❌) $DOT_REPO Unavailable. Try Again"
+		echo -e "\n[❌] $DOT_REPO Unavailable. Try Again"
 		exit
 	fi
 }
@@ -109,13 +91,13 @@ config_check() {
 }
 
 manage() {
-	echo -e "[1] Show diff"
+	echo -e "\n[1] Show diff"
 	#  diff -u --suppress-common-lines --color file1.sh file2.sh
-	echo -e "[2] Push dotfiles to VCS"
-	echo -e "[3] Pull latest changes from VCS"
-	echo -e "[4] List dotfiles"
+	echo -e "[2] Push dotfiles to VCS Host"
+	echo -e "[3] Pull latest changes from VCS Host"
+	echo -e "[4] List all dotfiles"
 	# Default choice is [1]
-	read -p "What do you want me to do [1] : " -n 1 -r USER_INPUT
+	read -p "What do you want me to do ? [1]: " -n 1 -r USER_INPUT
 	# See Parameter Expansion
 	USER_INPUT=${USER_INPUT:-1}
 	case $USER_INPUT in
@@ -125,16 +107,22 @@ manage() {
 		     return;;
 		[3]* ) echo -e "\n Pulling dotfiles ..."
 		     return;;
-		[4]* ) echo -e "\n Listing dotfiles ..." 
+		[4]* ) printf "\n"
+			   find_dotfiles 
 			 return;;
 		* )     printf "\n${RB_YELLOW}${BOLD}Invalid Input 🙄, Exiting d○tman${RESET}\n";;
 	esac
 }
 
+goodbye() {
+	printf "\n\n%s" "$(tput bold)Thanks for using d○tman.$(tput sgr0)"
+	printf "\n%s%s" "$(tput bold)Follow $(tput setab 45)$(tput setaf 0)@bhupeshimself$(tput sgr0)" "$(tput bold) on Twitter "
+	printf "for more updates.$(tput sgr0)\n"
+}
 
-#printf "\aHi ${RB_YELLOW}$BOSS_NAME${RESET} 👋"
-echo -e "\n\aHi $BOSS_NAME 👋"
-printf "${RB_GREEN}${BOLD}${DOTMAN_LOGO}${RESET}\n"
+echo -e "\n\aHi $(tput bold)$(tput setaf 208)$BOSS_NAME$(tput sgr0) 👋"
+printf "%s" "$(tput bold)$(tput setaf 122)${DOTMAN_LOGO}$(tput sgr0)"
+
 
 #config_check
 manage
