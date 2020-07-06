@@ -47,6 +47,7 @@ init(){
 }
 
 find_dotfiles() {
+	printf "\n"
 	mapfile -t dotfiles < <( find "${HOME}" -maxdepth 1 -name ".*" -type f )
 	printf '%s\n' "${dotfiles[@]}"
 }
@@ -92,26 +93,28 @@ config_check() {
 }
 
 manage() {
-	echo -e "\n[1] Show diff"
-	echo -e "[2] Push dotfiles to VCS Host"
-	echo -e "[3] Pull latest changes from VCS Host"
-	echo -e "[4] List all dotfiles"
-	# Default choice is [1]
-	read -p "What do you want me to do ? [1]: " -n 1 -r USER_INPUT
-	# See Parameter Expansion
-	USER_INPUT=${USER_INPUT:-1}
-	case $USER_INPUT in
-		[1]* ) echo -e "\ndiff"
-		     return;;
-		[2]* ) echo -e "\n Pushing dotfiles ..."
-		     return;;
-		[3]* ) echo -e "\n Pulling dotfiles ..."
-		     return;;
-		[4]* ) printf "\n"
-			   find_dotfiles 
-			 return;;
-		* )     printf "\n%s\n" "[❌]Invalid Input 🙄, Exiting $(tput bold)d○tman$(tput sgr0)";;
-	esac
+	while :
+	do
+		echo -e "\n[1] Show diff"
+		echo -e "[2] Push dotfiles to VCS Host"
+		echo -e "[3] Pull latest changes from VCS Host"
+		echo -e "[4] List all dotfiles"
+		echo -e "[q/Q] Quit Session"
+		# Default choice is [1]
+		read -p "What do you want me to do ? [1]: " -n 1 -r USER_INPUT
+		# See Parameter Expansion
+		USER_INPUT=${USER_INPUT:-1}
+		case $USER_INPUT in
+			[1]* ) echo -e "\ndiff";;
+				   #diff_check
+			[2]* ) echo -e "\n Pushing dotfiles ...";;
+			[3]* ) echo -e "\n Pulling dotfiles ...";;
+			[4]* ) find_dotfiles;;
+			[q/Q]* ) goodbye 
+					 exit;;
+			* )     printf "\n%s\n" "[❌]Invalid Input 🙄, Exiting $(tput bold)d○tman$(tput sgr0)";;
+		esac
+	done
 }
 
 goodbye() {
@@ -127,21 +130,48 @@ intro() {
 }
 
 # WIP
+dot_push() {
+	# Copy all files to the repo.
+	
+	# Run Git Add
+	# git add -A
+	
+	echo -e "$(tput bold)Enter Commit Message: $(tput sgr0)\n"
+	commit=$(</dev/stdin)
+	echo -e "\n\n$commit"
+	# git commit -m "${commit}"
+	
+	# Run Git Push
+	# git push
+}
+
+# WIP
 diff_check() {
-	mapfile -t dotfiles < <( find "${DOT_DEST}/${DOT_REPO_NAME}" -maxdepth 1 -name ".*" -type f )
-	for file in "${dotfiles[@]}"
+	# dotfiles in repository
+	mapfile -t dotfiles_repo < <( find "${DOT_DEST}/${DOT_REPO_NAME}" -maxdepth 1 -name ".*" -type f )
+	#dotfiles present inside $HOME
+	mapfile -t dotfiles_home < <( find "${HOME}" -maxdepth 1 -name ".*" -type f )
+
+	# check length here ?
+	for file in "${dotfiles_repo[@]}"
 	do
-		diff -u --suppress-common-lines --color file1.sh file2.sh
-		echo "$file"
+		if [[ ${dotfiles_home[$file]} == "${dotfiles_repo[$file]}" ]]; then
+			diff=$(diff -u --suppress-common-lines --color "${dotfiles_home[$file]}" "${dotfiles_repo[$file]}")
+			if [[ $diff != "" ]]; then
+				printf "%s" "Running diff between $(tput bold) ${dotfiles_home[$file]} $(tput sgr0) and "
+				printf "%s\n" "$(tput bold) ${dotfiles_repo[$file]} $(tput sgr0)"
+				echo -e "$diff"
+			fi
+		fi
 	done
 }
 
 intro
-config_check
-#manage
+#config_check
+manage
 # find_dotfiles
 # TODO
-# {1} : If repo is present see if there is a difference between files inside the repo.
+# {1} ✅: If repo is present see if there is a difference between files inside the repo.
 # {2} : Copy changed files to the repo.
 # {3} : run git and ask user to push.
 # {4} ✅: Find all dot files
