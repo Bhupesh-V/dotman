@@ -8,10 +8,9 @@ set +x
 IFS=$'\n'
 
 # set these 2 as env variables
-DOT_DEST=""
-DOT_REPO="https://github.com/Bhupesh-V/.Varshney.git"
+# DOT_DEST=""
+# DOT_REPO="https://github.com/Bhupesh-V/.Varshney.git"
 
-DOT_REPO_NAME=$(basename ${DOT_REPO})
 BOSS_NAME=$LOGNAME
 # this is called a "here document ? heh?"
 DOTMAN_LOGO=$(cat << "LOGO"
@@ -36,19 +35,23 @@ catch_ctrlc() {
 trap 'catch_ctrlc' SIGINT
 # echo "dotfiles folder path: ${HOME}/${DOT_DEST}"
 
-init(){
+repo_check(){
+	# check if dotfile repo is present
+
+	DOT_REPO_NAME=$(basename "${DOT_REPO}")
 	if [ -d "${HOME}/${DOT_DEST}/${DOT_REPO_NAME}" ]
 	then
-	    echo -e "Found ${DOT_REPO_NAME} as a dotfile repo"
+	    echo -e "\nFound $(tput bold)${DOT_REPO_NAME}$(tput sgr0) as a dotfile repo"
 	else
-	    echo -e "${DOT_REPO_NAME} not present inside path ${HOME}/${DOT_DEST}.\n
-	    Consider changing current working directory"
+	    echo -e "\n\n[❌] $(tput bold)${DOT_REPO_NAME}$(tput sgr0) not present inside path $(tput bold)${HOME}/${DOT_DEST}$(tput sgr0)."
+	    echo -e "Change current working directory"
+	    exit
 	fi
 }
 
 find_dotfiles() {
 	printf "\n"
-	mapfile -t dotfiles < <( find "${HOME}" -maxdepth 1 -name ".*" -type f )
+	readarray -t dotfiles < <( find "${HOME}" -maxdepth 1 -name ".*" -type f )
 	printf '%s\n' "${dotfiles[@]}"
 }
 
@@ -82,12 +85,14 @@ initial_setup() {
 	fi
 }
 
-config_check() {
-	# check if env variables are set
-	if [[ -z "${DOT_DEST}" ]] && [[ -z "${DOT_REPO}" ]] 
-	then
-	    return
+init_check() {
+	# Check wether its a first time use or not
+	if [[ ! -z ${DOT_REPO} && ! -z ${DOT_DEST} ]]; then
+	    # variables exist, show manage menu
+	    repo_check
+	    manage
 	else
+		# show First Time setup menu
 		initial_setup
 	fi
 }
@@ -96,7 +101,7 @@ manage() {
 	while :
 	do
 		echo -e "\n[1] Show diff"
-		echo -e "[2] Push dotfiles to VCS Host"
+		echo -e "[2] Push changed dotfiles to VCS Host"
 		echo -e "[3] Pull latest changes from VCS Host"
 		echo -e "[4] List all dotfiles"
 		echo -e "[q/Q] Quit Session"
@@ -105,9 +110,10 @@ manage() {
 		# See Parameter Expansion
 		USER_INPUT=${USER_INPUT:-1}
 		case $USER_INPUT in
-			[1]* ) echo -e "\ndiff";;
-				   #diff_check
-			[2]* ) echo -e "\n Pushing dotfiles ...";;
+			[1]* ) echo -e "\ndiff"
+				   diff_check;;
+			[2]* ) echo -e "\n Pushing dotfiles ..."
+				   dot_push;;
 			[3]* ) echo -e "\n Pulling dotfiles ...";;
 			[4]* ) find_dotfiles;;
 			[q/Q]* ) goodbye 
@@ -136,7 +142,7 @@ dot_push() {
 	# Run Git Add
 	# git add -A
 	
-	echo -e "$(tput bold)Enter Commit Message: $(tput sgr0)\n"
+	echo -e "$(tput bold)Enter Commit Message (Ctrl + d to save): $(tput sgr0)\n"
 	commit=$(</dev/stdin)
 	echo -e "\n\n$commit"
 	# git commit -m "${commit}"
@@ -148,7 +154,7 @@ dot_push() {
 # WIP
 diff_check() {
 	# dotfiles in repository
-	mapfile -t dotfiles_repo < <( find "${DOT_DEST}/${DOT_REPO_NAME}" -maxdepth 1 -name ".*" -type f )
+	mapfile -t dotfiles_repo < <( find "${HOME}/${DOT_DEST}/${DOT_REPO_NAME}" -maxdepth 1 -name ".*" -type f )
 	#dotfiles present inside $HOME
 	mapfile -t dotfiles_home < <( find "${HOME}" -maxdepth 1 -name ".*" -type f )
 
@@ -167,8 +173,7 @@ diff_check() {
 }
 
 intro
-#config_check
-manage
+init_check
 # find_dotfiles
 # TODO
 # {1} ✅: If repo is present see if there is a difference between files inside the repo.
