@@ -36,7 +36,7 @@ trap 'catch_ctrlc' SIGINT
 # echo "dotfiles folder path: ${HOME}/${DOT_DEST}"
 
 repo_check(){
-	# check if dotfile repo is present
+	# check if dotfile repo is present inside DOT_DEST
 
 	DOT_REPO_NAME=$(basename "${DOT_REPO}")
 	if [ -d "${HOME}/${DOT_DEST}/${DOT_REPO_NAME}" ]
@@ -55,6 +55,22 @@ find_dotfiles() {
 	printf '%s\n' "${dotfiles[@]}"
 }
 
+add_env() {
+	# export environment variables
+	echo -e "\nExporting env variables..."
+	echo -e "$1"
+	echo -e "$2"
+
+	current_shell=$(basename "$SHELL")
+	if [[ $current_shell == "zsh" ]]; then
+		echo "export DOT_REPO=$1" >> "$HOME"/.zshrc
+		echo "export DOT_DEST=$2" >> "$HOME"/.zshrc
+	else
+		echo "export DOT_REPO=$1" >> "$HOME"/.bashrc
+		echo "export DOT_DEST=$2" >> "$HOME"/.bashrc
+	fi
+}
+
 initial_setup() {
 	echo -e "\n\nFirst time use 🔥, Set Up $(tput bold)d○tman$(tput sgr0)"
 	echo -e "....................................\n"
@@ -70,9 +86,9 @@ initial_setup() {
 		if [[ -d "$HOME/$DOT_DEST" ]]
 		then
 			printf "\n%s\r\n" "$(tput bold)Calling 📞 Git ... $(tput sgr0)"
-			# clone the repo in the directory entered
+			# clone the repo in the destination directory
 			git -C "${HOME}/${DOT_DEST}" clone "${DOT_REPO}"
-			echo -e "\nExporting env variables..."
+			add_env "$DOT_REPO" "$DOT_DEST"
 			echo -e "\n[✔️ ] dotman successfully configured "
 			goodbye
 		else
@@ -88,11 +104,10 @@ initial_setup() {
 init_check() {
 	# Check wether its a first time use or not
 	if [[ ! -z ${DOT_REPO} && ! -z ${DOT_DEST} ]]; then
-	    # variables exist, show manage menu
 	    repo_check
 	    manage
 	else
-		# show First Time setup menu
+		# show first time setup menu
 		initial_setup
 	fi
 }

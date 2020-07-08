@@ -26,12 +26,13 @@
   / _` |/ _ \| __| '_ ` _ \ / _` | '_ \ 
  | (_| | (_) | |_| | | | | | (_| | | | |
   \__,_|\___/ \__|_| |_| |_|\__,_|_| |_|
+
 </b>
 </pre>
 
 <blockquote>
   <h3 align="center">
-    d○tman is a simple (dot)file (man)ager
+    d○tman is a simple & elegant (dot)file (man)ager
   </h3>
 </blockquote>
 
@@ -48,14 +49,14 @@
 * Single file
 * No config file for dotman (No `.dotrc` 🤦)
 * No useless arguments (single command 😎)
+* Easy to use
 * Extendable ⚒, _Available as a Template_
 * Fewer Dependencies
-  1. `Bash >= 4`
-  2. `Git`
-  3. `curl`_*_
+  1. `Git`
+  2. `curl`_*_
 
 
-## Installation
+## 💠 Installation
 
 #### via curl ➰
 
@@ -67,6 +68,12 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/Bhupesh-v/dotman/master/in
 
 ```shell
 sh -c "$(wget -O- https://raw.githubusercontent.com/Bhupesh-v/dotman/master/install.sh)"
+```
+
+#### via httpie 🥧
+
+```shell
+sh -c "$(http --download https://raw.githubusercontent.com/Bhupesh-v/dotman/master/install.sh)"
 ```
 
 > **dotman** is installed by default in `/home/username/.dotman`
