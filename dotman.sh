@@ -39,8 +39,7 @@ repo_check(){
 	# check if dotfile repo is present inside DOT_DEST
 
 	DOT_REPO_NAME=$(basename "${DOT_REPO}")
-	if [ -d "${HOME}/${DOT_DEST}/${DOT_REPO_NAME}" ]
-	then
+	if [[ -d ${HOME}/${DOT_DEST}/${DOT_REPO_NAME} ]]; then
 	    echo -e "\nFound $(tput bold)${DOT_REPO_NAME}$(tput sgr0) as a dotfile repo"
 	else
 	    echo -e "\n\n[❌] $(tput bold)${DOT_REPO_NAME}$(tput sgr0) not present inside path $(tput bold)${HOME}/${DOT_DEST}$(tput sgr0)."
@@ -78,13 +77,11 @@ initial_setup() {
 	printf "\n%s%s" "$(tput bold)Checking URL ..." "$(tput sgr0)"
 	
 	isValidURL=$(curl -IsS --silent -o /dev/null -w '%{http_code}' "${DOT_REPO}")
-	if [[ $isValidURL == 200 ]]
-	then
+	if [[ $isValidURL == 200 ]]; then
 		printf "\r"
 		read -p "⚪ Where should I clone $(tput bold)$(basename "${DOT_REPO}")$(tput sgr0) (${HOME}/..): " -r DOT_DEST
 		DOT_DEST=${DOT_DEST:-$HOME}
-		if [[ -d "$HOME/$DOT_DEST" ]]
-		then
+		if [[ -d "$HOME/$DOT_DEST" ]]; then
 			printf "\n%s\r\n" "$(tput bold)Calling 📞 Git ... $(tput sgr0)"
 			# clone the repo in the destination directory
 			git -C "${HOME}/${DOT_DEST}" clone "${DOT_REPO}"
@@ -103,12 +100,12 @@ initial_setup() {
 
 init_check() {
 	# Check wether its a first time use or not
-	if [[ ! -z ${DOT_REPO} && ! -z ${DOT_DEST} ]]; then
-	    repo_check
-	    manage
-	else
-		# show first time setup menu
+	if [[ -z ${DOT_REPO} && -z ${DOT_DEST} ]]; then
+	    # show first time setup menu
 		initial_setup
+	else
+		repo_check
+	    manage
 	fi
 }
 
@@ -169,20 +166,20 @@ dot_push() {
 # WIP
 diff_check() {
 	# dotfiles in repository
-	mapfile -t dotfiles_repo < <( find "${HOME}/${DOT_DEST}/${DOT_REPO_NAME}" -maxdepth 1 -name ".*" -type f )
+	mapfile -t dotfiles_repo < <( find "${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")" -maxdepth 1 -name ".*" -type f )
 	#dotfiles present inside $HOME
-	mapfile -t dotfiles_home < <( find "${HOME}" -maxdepth 1 -name ".*" -type f )
+	#mapfile -t dotfiles_home < <( find "${HOME}" -maxdepth 1 -name ".*" -type f )
 
 	# check length here ?
-	for file in "${dotfiles_repo[@]}"
+	for (( i=0; i<"${#dotfiles_repo[@]}"; i++))
 	do
-		if [[ ${dotfiles_home[$file]} == "${dotfiles_repo[$file]}" ]]; then
-			diff=$(diff -u --suppress-common-lines --color "${dotfiles_home[$file]}" "${dotfiles_repo[$file]}")
-			if [[ $diff != "" ]]; then
-				printf "%s" "Running diff between $(tput bold) ${dotfiles_home[$file]} $(tput sgr0) and "
-				printf "%s\n" "$(tput bold) ${dotfiles_repo[$file]} $(tput sgr0)"
-				echo -e "$diff"
-			fi
+		# the version of dotfile available in HOME
+		home_version=$(basename "${dotfiles_repo[$i]}")
+		diff=$(diff -u --suppress-common-lines --color=always "${HOME}/${home_version}" "${dotfiles_repo[$i]}")
+		if [[ $diff != "" ]]; then
+			printf "\n%s" "Running diff between $(tput bold) ${dotfiles_repo[$i]} $(tput sgr0) and "
+			printf "%s\n" "$(tput bold) ${HOME}/${home_version} $(tput sgr0)"
+			printf "%s" "$diff"
 		fi
 	done
 }
