@@ -56,18 +56,80 @@ find_dotfiles() {
 
 add_env() {
 	# export environment variables
-	echo -e "\nExporting env variables..."
-	echo -e "$1"
-	echo -e "$2"
+	echo -e "\nExporting env variables DOT_DEST & DOT_REPO ..."
+	# echo -e "$1"
+	# echo -e "$2"
 
 	current_shell=$(basename "$SHELL")
 	if [[ $current_shell == "zsh" ]]; then
 		echo "export DOT_REPO=$1" >> "$HOME"/.zshrc
 		echo "export DOT_DEST=$2" >> "$HOME"/.zshrc
 	else
+		# assume we have a fallback to bash
 		echo "export DOT_REPO=$1" >> "$HOME"/.bashrc
 		echo "export DOT_DEST=$2" >> "$HOME"/.bashrc
 	fi
+	echo -e "Configuration for SHELL: $(tput bold)$current_shell$(tput sgr0) has been updated."
+}
+
+goodbye() {
+	printf "\a\n\n%s\n" "$(tput bold)Thanks for using d○tman 🖖.$(tput sgr0)"
+	printf "\n%s%s" "$(tput bold)Follow $(tput setab 45)$(tput setaf 0)@bhupeshimself$(tput sgr0)" "$(tput bold) on Twitter "
+	printf "%s\n" "for more updates.$(tput sgr0)"
+	printf "%s\n" "$(tput bold)Report Bugs : $(tput smul)https://github.com/Bhupesh-V/dotman/issues$(tput rmul)$(tput sgr0)"
+}
+
+# WIP
+dot_pull() {
+	# pull changes (if any) from the host repo
+	git -C "${HOME}/${DOT_DEST}/${DOT_REPO}" pull origin master
+}
+
+# WIP
+diff_check() {
+	local -n file_arr=$1
+	# dotfiles in repository
+	mapfile -t dotfiles_repo < <( find "${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")" -maxdepth 1 -name ".*" -type f )
+	#dotfiles present inside $HOME
+	#mapfile -t dotfiles_home < <( find "${HOME}" -maxdepth 1 -name ".*" -type f )
+
+	# check length here ?
+	for (( i=0; i<"${#dotfiles_repo[@]}"; i++))
+	do
+		# the version of dotfile available in HOME dir
+		home_version=$(basename "${dotfiles_repo[$i]}")
+		diff=$(diff -u --suppress-common-lines --color=always "${HOME}/${home_version}" "${dotfiles_repo[$i]}")
+		if [[ $diff != "" ]]; then
+			printf "\n%s" "Running diff between $(tput bold) ${dotfiles_repo[$i]} $(tput sgr0) and "
+			printf "%s\n" "$(tput bold) ${HOME}/${home_version} $(tput sgr0)"
+			printf "%s" "$diff"
+			file_arr+=(${home_version})
+		fi
+	done
+}
+
+# WIP
+dot_push() {
+	# Copy all files to the repo.
+	local changed_dotfiles
+	diff_check changed_dotfiles
+	declare -p changed_dotfiles
+
+	for file in $changed_dotfiles; do
+		cp "$file" "${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")"
+	done
+
+
+	# Run Git Add
+	# git add -A
+	
+	echo -e "$(tput bold)Enter Commit Message (Ctrl + d to save): $(tput sgr0)\n"
+	commit=$(</dev/stdin)
+	echo -e "\n\n$commit"
+	# git commit -m "${commit}"
+	
+	# Run Git Push
+	# git push
 }
 
 initial_setup() {
@@ -98,17 +160,6 @@ initial_setup() {
 	fi
 }
 
-init_check() {
-	# Check wether its a first time use or not
-	if [[ -z ${DOT_REPO} && -z ${DOT_DEST} ]]; then
-	    # show first time setup menu
-		initial_setup
-	else
-		repo_check
-	    manage
-	fi
-}
-
 manage() {
 	while :
 	do
@@ -127,6 +178,7 @@ manage() {
 			[2]* ) echo -e "\n Pushing dotfiles ..."
 				   dot_push;;
 			[3]* ) echo -e "\n Pulling dotfiles ...";;
+				   # dot_pull
 			[4]* ) find_dotfiles;;
 			[q/Q]* ) goodbye 
 					 exit;;
@@ -135,62 +187,30 @@ manage() {
 	done
 }
 
-goodbye() {
-	printf "\a\n\n%s\n" "$(tput bold)Thanks for using d○tman 🖖.$(tput sgr0)"
-	printf "\n%s%s" "$(tput bold)Follow $(tput setab 45)$(tput setaf 0)@bhupeshimself$(tput sgr0)" "$(tput bold) on Twitter "
-	printf "%s\n" "for more updates.$(tput sgr0)"
-	printf "%s\n" "$(tput bold)Report Bugs : $(tput smul)https://github.com/Bhupesh-V/dotman/issues$(tput rmul)$(tput sgr0)"
-}
-
 intro() {
 	echo -e "\n\aHi $(tput bold)$(tput setaf 208)$BOSS_NAME$(tput sgr0) 👋"
 	printf "%s" "$(tput bold)$(tput setaf 122)${DOTMAN_LOGO}$(tput sgr0)"	
 }
 
-# WIP
-dot_push() {
-	# Copy all files to the repo.
-	
-	# Run Git Add
-	# git add -A
-	
-	echo -e "$(tput bold)Enter Commit Message (Ctrl + d to save): $(tput sgr0)\n"
-	commit=$(</dev/stdin)
-	echo -e "\n\n$commit"
-	# git commit -m "${commit}"
-	
-	# Run Git Push
-	# git push
+init_check() {
+	# Check wether its a first time use or not
+	if [[ -z ${DOT_REPO} && -z ${DOT_DEST} ]]; then
+	    # show first time setup menu
+		initial_setup
+	else
+		repo_check
+	    manage
+	fi
 }
 
-# WIP
-diff_check() {
-	# dotfiles in repository
-	mapfile -t dotfiles_repo < <( find "${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")" -maxdepth 1 -name ".*" -type f )
-	#dotfiles present inside $HOME
-	#mapfile -t dotfiles_home < <( find "${HOME}" -maxdepth 1 -name ".*" -type f )
-
-	# check length here ?
-	for (( i=0; i<"${#dotfiles_repo[@]}"; i++))
-	do
-		# the version of dotfile available in HOME
-		home_version=$(basename "${dotfiles_repo[$i]}")
-		diff=$(diff -u --suppress-common-lines --color=always "${HOME}/${home_version}" "${dotfiles_repo[$i]}")
-		if [[ $diff != "" ]]; then
-			printf "\n%s" "Running diff between $(tput bold) ${dotfiles_repo[$i]} $(tput sgr0) and "
-			printf "%s\n" "$(tput bold) ${HOME}/${home_version} $(tput sgr0)"
-			printf "%s" "$diff"
-		fi
-	done
-}
 
 intro
 init_check
-# find_dotfiles
+
 # TODO
 # {1} ✅: If repo is present see if there is a difference between files inside the repo.
 # {2} : Copy changed files to the repo.
-# {3} : run git and ask user to push.
+# {3} ✅: run git and ask user to push.
 # {4} ✅: Find all dot files
 # {5} ✅ : Set dotman as alias to the script
 # {6} ✅: Pimp up prompts
