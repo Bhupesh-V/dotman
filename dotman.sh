@@ -40,7 +40,7 @@ repo_check(){
 
 	DOT_REPO_NAME=$(basename "${DOT_REPO}")
 	if [[ -d ${HOME}/${DOT_DEST}/${DOT_REPO_NAME} ]]; then
-	    echo -e "\nFound $(tput bold)${DOT_REPO_NAME}$(tput sgr0) as a dotfile repo"
+	    echo -e "\nFound $(tput bold)${DOT_REPO_NAME}$(tput sgr0) as a dotfile repo in $(tput bold)${DOT_DEST}/$(tput sgr0)"
 	else
 	    echo -e "\n\n[❌] $(tput bold)${DOT_REPO_NAME}$(tput sgr0) not present inside path $(tput bold)${HOME}/${DOT_DEST}$(tput sgr0)."
 	    echo -e "Change current working directory"
@@ -82,16 +82,21 @@ goodbye() {
 # WIP
 dot_pull() {
 	# pull changes (if any) from the host repo
-	git -C "${HOME}/${DOT_DEST}/${DOT_REPO}" pull origin master
+	echo -e "\n$(tput bold)Pulling dotfiles ...$(tput sgr0)"
+	dot_repo="${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")"
+	echo -e "\nPulling changes in $dot_repo\n"
+	git -C "$dot_repo" pull origin master
 }
 
 # WIP
 diff_check() {
-	local -n file_arr=$1
+
+	if [[ $1 != "" && $1 != "show" ]]; then
+		local -n file_arr=$1
+	fi
+
 	# dotfiles in repository
-	mapfile -t dotfiles_repo < <( find "${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")" -maxdepth 1 -name ".*" -type f )
-	#dotfiles present inside $HOME
-	#mapfile -t dotfiles_home < <( find "${HOME}" -maxdepth 1 -name ".*" -type f )
+	readarray -t dotfiles_repo < <( find "${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")" -maxdepth 1 -name ".*" -type f )
 
 	# check length here ?
 	for (( i=0; i<"${#dotfiles_repo[@]}"; i++))
@@ -99,31 +104,33 @@ diff_check() {
 		# the version of dotfile available in HOME dir
 		home_version=$(basename "${dotfiles_repo[$i]}")
 		diff=$(diff -u --suppress-common-lines --color=always "${HOME}/${home_version}" "${dotfiles_repo[$i]}")
-		if [[ $diff != "" ]]; then
-			printf "\n%s" "Running diff between $(tput bold) ${dotfiles_repo[$i]} $(tput sgr0) and "
-			printf "%s\n" "$(tput bold) ${HOME}/${home_version} $(tput sgr0)"
-			printf "%s" "$diff"
+		if [[ $diff != "" && $1 == "show" ]]; then
+			printf "\n\n%s" "Running diff between $(tput bold) $(tput setaf 214)${dotfiles_repo[$i]}$(tput sgr0) and "
+			printf "%s\n" "$(tput bold)$(tput setaf 214)${HOME}/${home_version}$(tput sgr0)"
+			printf "%s\n\n" "$diff"
 			file_arr+=(${home_version})
 		fi
 	done
+	echo -e "${file_arr[@]}"
+}
+
+show_diff_check() {
+	diff_check "show"
 }
 
 # WIP
 dot_push() {
 	# Copy all files to the repo.
-	local changed_dotfiles
-	diff_check changed_dotfiles
-	declare -p changed_dotfiles
 
-	for file in $changed_dotfiles; do
-		cp "$file" "${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")"
-	done
+	# for file in $file_arr; do
+	# 	cp "${HOME}/$file" "${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")"
+	# done
 
 
 	# Run Git Add
 	# git add -A
 	
-	echo -e "$(tput bold)Enter Commit Message (Ctrl + d to save): $(tput sgr0)\n"
+	echo -e "$(tput bold)Enter Commit Message (Ctrl + d to save): $(tput sgr0)"
 	commit=$(</dev/stdin)
 	echo -e "\n\n$commit"
 	# git commit -m "${commit}"
@@ -138,6 +145,7 @@ initial_setup() {
 	read -p "⚪ Enter dotfiles repository URL : " -r DOT_REPO
 	printf "\n%s%s" "$(tput bold)Checking URL ..." "$(tput sgr0)"
 	
+	# remove curl ?
 	isValidURL=$(curl -IsS --silent -o /dev/null -w '%{http_code}' "${DOT_REPO}")
 	if [[ $isValidURL == 200 ]]; then
 		printf "\r"
@@ -173,16 +181,14 @@ manage() {
 		# See Parameter Expansion
 		USER_INPUT=${USER_INPUT:-1}
 		case $USER_INPUT in
-			[1]* ) echo -e "\ndiff"
-				   diff_check;;
+			[1]* ) show_diff_check;;
 			[2]* ) echo -e "\n Pushing dotfiles ..."
 				   dot_push;;
-			[3]* ) echo -e "\n Pulling dotfiles ...";;
-				   # dot_pull
+			[3]* ) dot_pull;;
 			[4]* ) find_dotfiles;;
 			[q/Q]* ) goodbye 
 					 exit;;
-			* )     printf "\n%s\n" "[❌]Invalid Input 🙄, Exiting $(tput bold)d○tman$(tput sgr0)";;
+			* )     printf "\n%s\n" "[❌]Invalid Input 🙄, Try Again";;
 		esac
 	done
 }
