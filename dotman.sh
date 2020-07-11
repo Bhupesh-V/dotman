@@ -7,10 +7,6 @@ set +x
 
 IFS=$'\n'
 
-# set these 2 as env variables
-# DOT_DEST=""
-# DOT_REPO="https://github.com/Bhupesh-V/.Varshney.git"
-
 BOSS_NAME=$LOGNAME
 # this is called a "here document ? heh?"
 DOTMAN_LOGO=$(cat << "LOGO"
@@ -27,13 +23,12 @@ LOGO
 )
 
 # function called by trap
-catch_ctrlc() {
+catch_ctrl+c() {
     goodbye
     exit
 }
 
-trap 'catch_ctrlc' SIGINT
-# echo "dotfiles folder path: ${HOME}/${DOT_DEST}"
+trap 'catch_ctrl+c' SIGINT
 
 repo_check(){
 	# check if dotfile repo is present inside DOT_DEST
@@ -57,8 +52,6 @@ find_dotfiles() {
 add_env() {
 	# export environment variables
 	echo -e "\nExporting env variables DOT_DEST & DOT_REPO ..."
-	# echo -e "$1"
-	# echo -e "$2"
 
 	current_shell=$(basename "$SHELL")
 	if [[ $current_shell == "zsh" ]]; then
@@ -91,8 +84,8 @@ dot_pull() {
 # WIP
 diff_check() {
 
-	if [[ $1 != "" && $1 != "show" ]]; then
-		local -n file_arr=$1
+	if [[ -z $1 ]]; then
+		declare -ag file_arr
 	fi
 
 	# dotfiles in repository
@@ -108,10 +101,13 @@ diff_check() {
 			printf "\n\n%s" "Running diff between $(tput bold) $(tput setaf 214)${dotfiles_repo[$i]}$(tput sgr0) and "
 			printf "%s\n" "$(tput bold)$(tput setaf 214)${HOME}/${home_version}$(tput sgr0)"
 			printf "%s\n\n" "$diff"
-			file_arr+=(${home_version})
+			file_arr+=("${home_version}")
 		fi
 	done
-	echo -e "${file_arr[@]}"
+	if [[ ${#file_arr} == 0 ]]; then
+		echo -e "\n\n$(tput bold)No Changes in dotfiles.$(tput sgr0)"
+	fi
+	#echo -e "${file_arr[@]}"
 }
 
 show_diff_check() {
@@ -120,11 +116,13 @@ show_diff_check() {
 
 # WIP
 dot_push() {
-	# Copy all files to the repo.
 
-	# for file in $file_arr; do
-	# 	cp "${HOME}/$file" "${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")"
-	# done
+	diff_check
+
+	for file in "${file_arr[@]}"; do
+		echo "$file"
+		cp "${HOME}/$file" "${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")"
+	done
 
 
 	# Run Git Add
@@ -212,12 +210,3 @@ init_check() {
 
 intro
 init_check
-
-# TODO
-# {1} ✅: If repo is present see if there is a difference between files inside the repo.
-# {2} : Copy changed files to the repo.
-# {3} ✅: run git and ask user to push.
-# {4} ✅: Find all dot files
-# {5} ✅ : Set dotman as alias to the script
-# {6} ✅: Pimp up prompts
-# {7} : Check for updates in dotman

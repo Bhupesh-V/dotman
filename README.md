@@ -90,6 +90,8 @@ sh -c "$(http --download https://raw.githubusercontent.com/Bhupesh-v/dotman/mast
   alias $(pwd)/dotman.sh=dotman
   ```
 
+> Note: If you install manually, updates to dotman will not be automatically available. You would have to download it from releases in case of any changes. 
+
 
 ## Usage
 
@@ -97,10 +99,18 @@ Just run **`dotman`** anywhere in your terminal 🖖.
 
 ```bash
 dotman
-# or ./dotman.sh if you installed manually
 ```
 Leave the rest to it.
 
+
+## What else ?
+
+dotman exports 2 variables in your default shell config (`bashrc`, `zshrc` etc):
+
+1. `DOT_DEST`: used for finding the location of repository in your local system.
+2. `DOT_REPO`: the url to the remote dotfile repo.
+
+You can change these manually if any one of the info changes.
 
 ## Author
 
