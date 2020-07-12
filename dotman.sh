@@ -85,6 +85,7 @@ dot_pull() {
 diff_check() {
 
 	if [[ -z $1 ]]; then
+		echo -e "Declaring array...."
 		declare -ag file_arr
 	fi
 
@@ -101,13 +102,12 @@ diff_check() {
 			printf "\n\n%s" "Running diff between $(tput bold) $(tput setaf 214)${dotfiles_repo[$i]}$(tput sgr0) and "
 			printf "%s\n" "$(tput bold)$(tput setaf 214)${HOME}/${home_version}$(tput sgr0)"
 			printf "%s\n\n" "$diff"
-			file_arr+=("${home_version}")
 		fi
+		file_arr+=("${home_version}")
 	done
 	if [[ ${#file_arr} == 0 ]]; then
 		echo -e "\n\n$(tput bold)No Changes in dotfiles.$(tput sgr0)"
 	fi
-	#echo -e "${file_arr[@]}"
 }
 
 show_diff_check() {
@@ -116,53 +116,48 @@ show_diff_check() {
 
 # WIP
 dot_push() {
-
 	diff_check
-
+	echo -e "$(tput bold)Following dotfiles changed$(tput sgr0)"
 	for file in "${file_arr[@]}"; do
 		echo "$file"
 		cp "${HOME}/$file" "${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")"
 	done
 
-
 	# Run Git Add
-	# git add -A
+	git add -A
 	
 	echo -e "$(tput bold)Enter Commit Message (Ctrl + d to save): $(tput sgr0)"
 	commit=$(</dev/stdin)
-	echo -e "\n\n$commit"
-	# git commit -m "${commit}"
+	# echo -e "\n\n$commit"
+	git commit -m "$commit"
 	
 	# Run Git Push
-	# git push
+	git push
 }
 
 initial_setup() {
 	echo -e "\n\nFirst time use 🔥, Set Up $(tput bold)d○tman$(tput sgr0)"
 	echo -e "....................................\n"
 	read -p "⚪ Enter dotfiles repository URL : " -r DOT_REPO
-	printf "\n%s%s" "$(tput bold)Checking URL ..." "$(tput sgr0)"
-	
-	# remove curl ?
-	isValidURL=$(curl -IsS --silent -o /dev/null -w '%{http_code}' "${DOT_REPO}")
-	if [[ $isValidURL == 200 ]]; then
-		printf "\r"
-		read -p "⚪ Where should I clone $(tput bold)$(basename "${DOT_REPO}")$(tput sgr0) (${HOME}/..): " -r DOT_DEST
-		DOT_DEST=${DOT_DEST:-$HOME}
-		if [[ -d "$HOME/$DOT_DEST" ]]; then
-			printf "\n%s\r\n" "$(tput bold)Calling 📞 Git ... $(tput sgr0)"
-			# clone the repo in the destination directory
-			git -C "${HOME}/${DOT_DEST}" clone "${DOT_REPO}"
+
+	# isValidURL=$(curl -IsS --silent -o /dev/null -w '%{http_code}' "${DOT_REPO}")
+	read -p "⚪ Where should I clone $(tput bold)$(basename "${DOT_REPO}")$(tput sgr0) (${HOME}/..): " -r DOT_DEST
+	DOT_DEST=${DOT_DEST:-$HOME}
+	if [[ -d "$HOME/$DOT_DEST" ]]; then
+		printf "\n%s\r\n" "$(tput bold)Calling 📞 Git ... $(tput sgr0)"
+		# clone the repo in the destination directory
+		if git -C "${HOME}/${DOT_DEST}" clone "${DOT_REPO}"; then
 			add_env "$DOT_REPO" "$DOT_DEST"
-			echo -e "\n[✔️ ] dotman successfully configured "
+			echo -e "\n[✔️ ] dotman successfully configured"
 			goodbye
 		else
-			echo -e "\n[❌] $DOT_DEST Not a Valid directory"
+			# invalid arguments to exit, Repository Not Found
+			echo -e "\n[❌] $DOT_REPO Unavailable. Exiting"
+			exit 1
 		fi
-		exit
 	else
-		echo -e "\n[❌] $DOT_REPO Unavailable. Try Again"
-		exit
+		echo -e "\n[❌]$(tput bold)$DOT_DEST$(tput sgr0) Not a Valid directory"
+		exit 1
 	fi
 }
 

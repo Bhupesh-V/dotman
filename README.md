@@ -5,10 +5,13 @@
     <img alt="Lint" src="https://github.com/Bhupesh-V/dotman/workflows/Lint/badge.svg?branch=master">
   </a>
   <a href="https://github.com/Bhupesh-V/dotman/blob/master/LICENSE">
-    <img alt="License: MIT" src="https://img.shields.io/github/license/Bhupesh-V/dotman" target="_blank" />
+    <img alt="License: MIT" src="https://img.shields.io/github/license/Bhupesh-V/dotman" />
   </a>
   <a href="https://github.com/Bhupesh-V/dotman/issues">
     <img alt="Issues" src="https://img.shields.io/github/issues/Bhupesh-V/dotman?color=blueviolet" />
+  </a>
+  <a href="https://github.com/ellerbrock/open-source-badges">
+    <img alt="bashit" src="https://badges.frapsoft.com/bash/v1/bash.png?v=103">
   </a>
   <a href="">
     <img alt="Website Status" src="https://img.shields.io/website?down_color=red&down_message=down&up_color=darkgreen&up_message=up&url=https%3A%2F%2Fwebsite.com" />
