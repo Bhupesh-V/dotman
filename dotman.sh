@@ -85,7 +85,6 @@ dot_pull() {
 diff_check() {
 
 	if [[ -z $1 ]]; then
-		echo -e "Declaring array...."
 		declare -ag file_arr
 	fi
 
@@ -123,16 +122,16 @@ dot_push() {
 		cp "${HOME}/$file" "${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")"
 	done
 
-	# Run Git Add
-	git add -A
+	dot_repo="${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")"
+	git -C "$dot_repo" add -A
 	
 	echo -e "$(tput bold)Enter Commit Message (Ctrl + d to save): $(tput sgr0)"
 	commit=$(</dev/stdin)
 	# echo -e "\n\n$commit"
-	git commit -m "$commit"
+	git -C "$dot_repo" commit -m "$commit"
 	
 	# Run Git Push
-	git push
+	git -C "$dot_repo" push
 }
 
 initial_setup() {
@@ -175,8 +174,7 @@ manage() {
 		USER_INPUT=${USER_INPUT:-1}
 		case $USER_INPUT in
 			[1]* ) show_diff_check;;
-			[2]* ) echo -e "\n Pushing dotfiles ..."
-				   dot_push;;
+			[2]* ) dot_push;;
 			[3]* ) dot_pull;;
 			[4]* ) find_dotfiles;;
 			[q/Q]* ) goodbye 
