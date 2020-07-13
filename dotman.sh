@@ -34,8 +34,9 @@ repo_check(){
 	# check if dotfile repo is present inside DOT_DEST
 
 	DOT_REPO_NAME=$(basename "${DOT_REPO}")
+	# all paths are relative to HOME
 	if [[ -d ${HOME}/${DOT_DEST}/${DOT_REPO_NAME} ]]; then
-	    echo -e "\nFound $(tput bold)${DOT_REPO_NAME}$(tput sgr0) as a dotfile repo in $(tput bold)${DOT_DEST}/$(tput sgr0)"
+	    echo -e "\nFound $(tput bold)${DOT_REPO_NAME}$(tput sgr0) as a dotfile repo in $(tput bold)${HOME}/${DOT_DEST}/$(tput sgr0)"
 	else
 	    echo -e "\n\n[❌] $(tput bold)${DOT_REPO_NAME}$(tput sgr0) not present inside path $(tput bold)${HOME}/${DOT_DEST}$(tput sgr0)."
 	    echo -e "Change current working directory"
@@ -67,7 +68,7 @@ add_env() {
 
 goodbye() {
 	printf "\a\n\n%s\n" "$(tput bold)Thanks for using d○tman 🖖.$(tput sgr0)"
-	printf "\n%s%s" "$(tput bold)Follow $(tput setab 45)$(tput setaf 0)@bhupeshimself$(tput sgr0)" "$(tput bold) on Twitter "
+	printf "\n%s%s" "$(tput bold)Follow $(tput setab 45)$(tput setaf 16)@bhupeshimself$(tput sgr0)" "$(tput bold) on Twitter "
 	printf "%s\n" "for more updates.$(tput sgr0)"
 	printf "%s\n" "$(tput bold)Report Bugs : $(tput smul)https://github.com/Bhupesh-V/dotman/issues$(tput rmul)$(tput sgr0)"
 }
@@ -97,12 +98,14 @@ diff_check() {
 		# the version of dotfile available in HOME dir
 		home_version=$(basename "${dotfiles_repo[$i]}")
 		diff=$(diff -u --suppress-common-lines --color=always "${HOME}/${home_version}" "${dotfiles_repo[$i]}")
-		if [[ $diff != "" && $1 == "show" ]]; then
-			printf "\n\n%s" "Running diff between $(tput bold) $(tput setaf 214)${dotfiles_repo[$i]}$(tput sgr0) and "
-			printf "%s\n" "$(tput bold)$(tput setaf 214)${HOME}/${home_version}$(tput sgr0)"
-			printf "%s\n\n" "$diff"
+		if [[ $diff != "" ]]; then
+			if [[ $1 == "show" ]]; then
+				printf "\n\n%s" "Running diff between $(tput bold) $(tput setaf 214)${dotfiles_repo[$i]}$(tput sgr0) and "
+				printf "%s\n" "$(tput bold)$(tput setaf 214)${HOME}/${home_version}$(tput sgr0)"
+				printf "%s\n\n" "$diff"
+			fi
+			file_arr+=("${home_version}")
 		fi
-		file_arr+=("${home_version}")
 	done
 	if [[ ${#file_arr} == 0 ]]; then
 		echo -e "\n\n$(tput bold)No Changes in dotfiles.$(tput sgr0)"
@@ -116,7 +119,7 @@ show_diff_check() {
 # WIP
 dot_push() {
 	diff_check
-	echo -e "$(tput bold)Following dotfiles changed$(tput sgr0)"
+	echo -e "\n$(tput bold)Following dotfiles changed$(tput sgr0)"
 	for file in "${file_arr[@]}"; do
 		echo "$file"
 		cp "${HOME}/$file" "${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")"
@@ -127,7 +130,7 @@ dot_push() {
 	
 	echo -e "$(tput bold)Enter Commit Message (Ctrl + d to save): $(tput sgr0)"
 	commit=$(</dev/stdin)
-	# echo -e "\n\n$commit"
+	echo -e "\n\n$commit"
 	git -C "$dot_repo" commit -m "$commit"
 	
 	# Run Git Push
@@ -164,8 +167,8 @@ manage() {
 	while :
 	do
 		echo -e "\n[1] Show diff"
-		echo -e "[2] Push changed dotfiles to VCS Host"
-		echo -e "[3] Pull latest changes from VCS Host"
+		echo -e "[2] Push changed dotfiles to remote"
+		echo -e "[3] Pull latest changes from remote"
 		echo -e "[4] List all dotfiles"
 		echo -e "[q/Q] Quit Session"
 		# Default choice is [1]
