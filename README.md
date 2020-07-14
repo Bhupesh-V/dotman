@@ -21,31 +21,20 @@
   </a>
 </p>
 
-<pre align="center">
-<b>
-      _       _                         
-     | |     | |                        
-   __| | ___ | |_ _ __ ___   __ _ _ __  
-  / _` |/ _ \| __| '_ ` _ \ / _` | '_ \ 
- | (_| | (_) | |_| | | | | | (_| | | | |
-  \__,_|\___/ \__|_| |_| |_|\__,_|_| |_|
-
-</b>
-</pre>
-
 <blockquote>
   <h3 align="center">
     d○tman is a simple & elegant (dot)file (man)ager
   </h3>
 </blockquote>
+<!--
+<img src="insert gif">
+-->
 
-<code>
-  <p align="center">
-    <h3 align="center">
+<samp>
+  <h3 align="center">
     <a href="">✨ Learn how I made d○tman from scratch ✨</a>
-    </h3>
-  </p>
-</code>
+  </h3>
+</samp>
 
 ## 🌠 Features
 
@@ -55,40 +44,40 @@
 * Easy to use
 * Extendable ⚒, _Available as a Template_
 * Fewer Dependencies
-  1. `Git`
-  2. `curl`_*_
+  - `Git`
+  - `Bash`
 
 
 ## 💠 Installation
 
-#### via curl ➰
+### via curl ➰
 
 ```shell
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/Bhupesh-v/dotman/master/install.sh)"
 ```
 
-#### via wget 📥
+### via wget 📥
 
 ```shell
 sh -c "$(wget -O- https://raw.githubusercontent.com/Bhupesh-v/dotman/master/install.sh)"
 ```
 
-#### via httpie 🥧
+### via httpie 🥧
 
 ```shell
 sh -c "$(http --download https://raw.githubusercontent.com/Bhupesh-v/dotman/master/install.sh)"
 ```
 
-> **dotman** is installed by default in `/home/username/.dotman`
+> **dotman** is installed by default in `/home/username/dotman`
 
-#### Manually ❓
+### Manually ❓
 
 1. Just grab **dotman.sh** from [Releases 🔼](https://github.com/Bhupesh-V/dotman/releases) and store it anywhere on your system.
-2. Make it 🏃 executable.
+2. Change file mode to be 🏃 executable.
   ```bash
   chmod +x dotman.sh
   ```
-3. Set alias for dotman _(optional)_. 
+3. Set alias for dotman _(optional)_. Alternatively modify your `.bash_aliases` file. 
   ```bash
   alias $(pwd)/dotman.sh=dotman
   ```
@@ -106,7 +95,7 @@ dotman
 Leave the rest to it.
 
 
-## What else ?
+## What else 👀
 
 dotman exports 2 variables in your default shell config (`bashrc`, `zshrc` etc):
 
@@ -123,7 +112,7 @@ You can change these manually if any one of the info changes.
 - Twitter : [@bhupeshimself](https://twitter.com/bhupeshimself)
 - DEV : [bhupesh](https://dev.to/bhupesh)
 
-[![forthebadge](https://forthebadge.com/images/badges/ages-18.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/ages-12.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
 
 ## ☺️ Show your support

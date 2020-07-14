@@ -7,7 +7,6 @@ set +x
 
 IFS=$'\n'
 
-BOSS_NAME=$LOGNAME
 # this is called a "here document ? heh?"
 DOTMAN_LOGO=$(cat << "LOGO"
 
@@ -97,11 +96,11 @@ diff_check() {
 	do
 		# the version of dotfile available in HOME dir
 		home_version=$(basename "${dotfiles_repo[$i]}")
-		diff=$(diff -u --suppress-common-lines --color=always "${HOME}/${home_version}" "${dotfiles_repo[$i]}")
+		diff=$(diff -u --suppress-common-lines --color=always "${dotfiles_repo[$i]}" "${HOME}/${home_version}")
 		if [[ $diff != "" ]]; then
 			if [[ $1 == "show" ]]; then
-				printf "\n\n%s" "Running diff between $(tput bold) $(tput setaf 214)${dotfiles_repo[$i]}$(tput sgr0) and "
-				printf "%s\n" "$(tput bold)$(tput setaf 214)${HOME}/${home_version}$(tput sgr0)"
+				printf "\n\n%s" "Running diff between $(tput bold) $(tput setaf 214)${HOME}/${home_version}$(tput sgr0) and "
+				printf "%s\n" "$(tput bold)$(tput setaf 214)${dotfiles_repo[$i]}$(tput sgr0)"
 				printf "%s\n\n" "$diff"
 			fi
 			file_arr+=("${home_version}")
@@ -188,6 +187,7 @@ manage() {
 }
 
 intro() {
+	BOSS_NAME=$LOGNAME
 	echo -e "\n\aHi $(tput bold)$(tput setaf 208)$BOSS_NAME$(tput sgr0) 👋"
 	printf "%s" "$(tput bold)$(tput setaf 122)${DOTMAN_LOGO}$(tput sgr0)"	
 }
