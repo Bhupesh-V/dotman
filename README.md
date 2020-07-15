@@ -68,7 +68,7 @@ sh -c "$(wget -O- https://raw.githubusercontent.com/Bhupesh-v/dotman/master/inst
 sh -c "$(http --download https://raw.githubusercontent.com/Bhupesh-v/dotman/master/install.sh)"
 ```
 
-> **dotman** is installed by default in `/home/username/dotman`
+> **dotman** is installed by default in `/home/username/dotman`. Your `$HOME` directory.
 
 ### Manually ❓
 
@@ -99,14 +99,14 @@ Leave the rest to it.
 
 dotman exports 2 variables in your default shell config (`bashrc`, `zshrc` etc):
 
-1. `DOT_DEST`: used for finding the location of repository in your local system.
+1. `DOT_DEST`: used for finding the location of dotfiles repository in your local system.
 2. `DOT_REPO`: the url to the remote dotfile repo.
 
 You can change these manually if any one of the info changes.
 
 ## Author
 
-:bust_in_silhouette: **Bhupesh Varshney**
+🤓 **Bhupesh Varshney**
 
 - Web : [bhupesh.codes](https://bhupesh.codes)
 - Twitter : [@bhupeshimself](https://twitter.com/bhupeshimself)

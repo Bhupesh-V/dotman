@@ -21,6 +21,12 @@ DOTMAN_LOGO=$(cat << "LOGO"
 LOGO
 )
 
+# check if tput is available
+BOLD=$(tput bold)
+RESET=$(tput sgr0)
+FG_SKYBLUE=$(tput setaf 122)
+FG_ORANGE=$(tput setaf 208)
+
 # function called by trap
 catch_ctrl+c() {
     goodbye
@@ -57,10 +63,14 @@ add_env() {
 	if [[ $current_shell == "zsh" ]]; then
 		echo "export DOT_REPO=$1" >> "$HOME"/.zshrc
 		echo "export DOT_DEST=$2" >> "$HOME"/.zshrc
-	else
+	elif [[ $current_shell == "bash" ]]; then
 		# assume we have a fallback to bash
 		echo "export DOT_REPO=$1" >> "$HOME"/.bashrc
 		echo "export DOT_DEST=$2" >> "$HOME"/.bashrc
+	else
+		echo "Couldn't export $(tput bold)DOT_REPO=$1$(tput sgr0) and $(tput bold)DOT_DEST=$2$(tput sgr0)"
+		echo "Consider exporting them manually".
+		exit 1
 	fi
 	echo -e "Configuration for SHELL: $(tput bold)$current_shell$(tput sgr0) has been updated."
 }
@@ -188,8 +198,8 @@ manage() {
 
 intro() {
 	BOSS_NAME=$LOGNAME
-	echo -e "\n\aHi $(tput bold)$(tput setaf 208)$BOSS_NAME$(tput sgr0) 👋"
-	printf "%s" "$(tput bold)$(tput setaf 122)${DOTMAN_LOGO}$(tput sgr0)"	
+	echo -e "\n\aHi ${BOLD}${FG_ORANGE}$BOSS_NAME${RESET} 👋"
+	printf "%s" "${BOLD}${FG_SKYBLUE}${DOTMAN_LOGO}${RESET}"	
 }
 
 init_check() {
