@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://github.com/Bhupesh-V/dotman/actions">
-    <img alt="Lint" src="https://github.com/Bhupesh-V/dotman/workflows/Lint/badge.svg?branch=master">
+    <img alt="shellcheck" src="https://github.com/Bhupesh-V/dotman/workflows/shellcheck/badge.svg?branch=master">
   </a>
   <a href="https://github.com/Bhupesh-V/dotman/blob/master/LICENSE">
     <img alt="License: MIT" src="https://img.shields.io/github/license/Bhupesh-V/dotman" />
@@ -53,19 +53,19 @@
 ### via curl ➰
 
 ```shell
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/Bhupesh-v/dotman/master/install.sh)"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/Bhupesh-v/dotman/master/tools/install.sh)"
 ```
 
 ### via wget 📥
 
 ```shell
-sh -c "$(wget -O- https://raw.githubusercontent.com/Bhupesh-v/dotman/master/install.sh)"
+sh -c "$(wget -O- https://raw.githubusercontent.com/Bhupesh-v/dotman/master/tools/install.sh)"
 ```
 
 ### via httpie 🥧
 
 ```shell
-sh -c "$(http --download https://raw.githubusercontent.com/Bhupesh-v/dotman/master/install.sh)"
+sh -c "$(http --download https://raw.githubusercontent.com/Bhupesh-v/dotman/master/tools/install.sh)"
 ```
 
 > **dotman** is installed by default in `/home/username/dotman`. Your `$HOME` directory.
@@ -80,6 +80,10 @@ sh -c "$(http --download https://raw.githubusercontent.com/Bhupesh-v/dotman/mast
 3. Set alias for dotman _(optional)_. Alternatively modify your `.bash_aliases` file. 
   ```bash
   alias $(pwd)/dotman.sh=dotman
+  ```
+4. Run **dotman**.
+  ```bash
+  ./dotman.sh
   ```
 
 > Note: If you install manually, updates to dotman will not be automatically available. You would have to download it from releases in case of any changes. 

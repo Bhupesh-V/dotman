@@ -34,9 +34,6 @@ main () {
 	# Clone repository to /home/username/dotman
 	# git -C "$HOME" clone "$REMOTE"
 
-	# Set Alias
-	# alias dotman="dotman.sh"
-
 	current_shell=$(basename "$SHELL")
 	if [ "$current_shell" = "zsh" ]; then
 		echo "export DOTMAN=$HOME/dotman/dotman.sh" >> "$HOME"/.zshrc

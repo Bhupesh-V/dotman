@@ -41,9 +41,9 @@ repo_check(){
 	DOT_REPO_NAME=$(basename "${DOT_REPO}")
 	# all paths are relative to HOME
 	if [[ -d ${HOME}/${DOT_DEST}/${DOT_REPO_NAME} ]]; then
-	    echo -e "\nFound $(tput bold)${DOT_REPO_NAME}$(tput sgr0) as a dotfile repo in $(tput bold)${HOME}/${DOT_DEST}/$(tput sgr0)"
+	    echo -e "\nFound ${BOLD}${DOT_REPO_NAME}${RESET} as a dotfile repo in ${BOLD}${HOME}/${DOT_DEST}/${RESET}"
 	else
-	    echo -e "\n\n[❌] $(tput bold)${DOT_REPO_NAME}$(tput sgr0) not present inside path $(tput bold)${HOME}/${DOT_DEST}$(tput sgr0)."
+	    echo -e "\n\n[❌] ${BOLD}${DOT_REPO_NAME}${RESET} not present inside path ${BOLD}${HOME}/${DOT_DEST}${RESET}."
 	    echo -e "Change current working directory"
 	    exit
 	fi
@@ -68,34 +68,32 @@ add_env() {
 		echo "export DOT_REPO=$1" >> "$HOME"/.bashrc
 		echo "export DOT_DEST=$2" >> "$HOME"/.bashrc
 	else
-		echo "Couldn't export $(tput bold)DOT_REPO=$1$(tput sgr0) and $(tput bold)DOT_DEST=$2$(tput sgr0)"
+		echo "Couldn't export ${BOLD}DOT_REPO=$1${RESET} and ${BOLD}DOT_DEST=$2${RESET}"
 		echo "Consider exporting them manually".
 		exit 1
 	fi
-	echo -e "Configuration for SHELL: $(tput bold)$current_shell$(tput sgr0) has been updated."
+	echo -e "Configuration for SHELL: ${BOLD}$current_shell${RESET} has been updated."
 }
 
 goodbye() {
-	printf "\a\n\n%s\n" "$(tput bold)Thanks for using d○tman 🖖.$(tput sgr0)"
-	printf "\n%s%s" "$(tput bold)Follow $(tput setab 45)$(tput setaf 16)@bhupeshimself$(tput sgr0)" "$(tput bold) on Twitter "
-	printf "%s\n" "for more updates.$(tput sgr0)"
-	printf "%s\n" "$(tput bold)Report Bugs : $(tput smul)https://github.com/Bhupesh-V/dotman/issues$(tput rmul)$(tput sgr0)"
+	printf "\a\n\n%s\n" "${BOLD}Thanks for using d○tman 🖖.${RESET}"
+	printf "\n%s%s" "${BOLD}Follow $(tput setab 45)$(tput setaf 16)@bhupeshimself${RESET}" "${BOLD} on Twitter "
+	printf "%s\n" "for more updates.${RESET}"
+	printf "%s\n" "${BOLD}Report Bugs : $(tput smul)https://github.com/Bhupesh-V/dotman/issues$(tput rmul)${RESET}"
 }
 
-# WIP
 dot_pull() {
 	# pull changes (if any) from the host repo
-	echo -e "\n$(tput bold)Pulling dotfiles ...$(tput sgr0)"
+	echo -e "\n${BOLD}Pulling dotfiles ...${RESET}"
 	dot_repo="${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")"
 	echo -e "\nPulling changes in $dot_repo\n"
 	git -C "$dot_repo" pull origin master
 }
 
-# WIP
 diff_check() {
 
 	if [[ -z $1 ]]; then
-		declare -ag file_arr
+		local file_arr
 	fi
 
 	# dotfiles in repository
@@ -104,20 +102,21 @@ diff_check() {
 	# check length here ?
 	for (( i=0; i<"${#dotfiles_repo[@]}"; i++))
 	do
-		# the version of dotfile available in HOME dir
-		home_version=$(basename "${dotfiles_repo[$i]}")
-		diff=$(diff -u --suppress-common-lines --color=always "${dotfiles_repo[$i]}" "${HOME}/${home_version}")
+		dotfile_name=$(basename "${dotfiles_repo[$i]}")
+		# compare the HOME version of dotfile to that of repo
+		diff=$(diff -u --suppress-common-lines --color=always "${dotfiles_repo[$i]}" "${HOME}/${dotfile_name}")
 		if [[ $diff != "" ]]; then
 			if [[ $1 == "show" ]]; then
-				printf "\n\n%s" "Running diff between $(tput bold) $(tput setaf 214)${HOME}/${home_version}$(tput sgr0) and "
-				printf "%s\n" "$(tput bold)$(tput setaf 214)${dotfiles_repo[$i]}$(tput sgr0)"
+				printf "\n\n%s" "Running diff between ${BOLD} $(tput setaf 214)${HOME}/${dotfile_name}${RESET} and "
+				printf "%s\n" "${BOLD}$(tput setaf 214)${dotfiles_repo[$i]}${RESET}"
 				printf "%s\n\n" "$diff"
 			fi
-			file_arr+=("${home_version}")
+			file_arr+=("${dotfile_name}")
 		fi
 	done
 	if [[ ${#file_arr} == 0 ]]; then
-		echo -e "\n\n$(tput bold)No Changes in dotfiles.$(tput sgr0)"
+		echo -e "\n\n${BOLD}No Changes in dotfiles.${RESET}"
+		return
 	fi
 }
 
@@ -125,37 +124,38 @@ show_diff_check() {
 	diff_check "show"
 }
 
-# WIP
 dot_push() {
 	diff_check
-	echo -e "\n$(tput bold)Following dotfiles changed$(tput sgr0)"
-	for file in "${file_arr[@]}"; do
-		echo "$file"
-		cp "${HOME}/$file" "${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")"
-	done
+	if [[ ${#file_arr} != 0 ]]; then
+		echo -e "\n${BOLD}Following dotfiles changed${RESET}"
+		for file in "${file_arr[@]}"; do
+			echo "$file"
+			cp "${HOME}/$file" "${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")"
+		done
 
-	dot_repo="${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")"
-	git -C "$dot_repo" add -A
-	
-	echo -e "$(tput bold)Enter Commit Message (Ctrl + d to save): $(tput sgr0)"
-	commit=$(</dev/stdin)
-	echo -e "\n\n$commit"
-	git -C "$dot_repo" commit -m "$commit"
-	
-	# Run Git Push
-	git -C "$dot_repo" push
+		dot_repo="${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")"
+		git -C "$dot_repo" add -A
+		
+		echo -e "${BOLD}Enter Commit Message (Ctrl + d to save): ${RESET}"
+		commit=$(</dev/stdin)
+		echo -e "\n\n$commit"
+		git -C "$dot_repo" commit -m "$commit"
+		
+		# Run Git Push
+		git -C "$dot_repo" push
+	fi
 }
 
 initial_setup() {
-	echo -e "\n\nFirst time use 🔥, Set Up $(tput bold)d○tman$(tput sgr0)"
+	echo -e "\n\nFirst time use 🔥, Set Up ${BOLD}d○tman${RESET}"
 	echo -e "....................................\n"
 	read -p "⚪ Enter dotfiles repository URL : " -r DOT_REPO
 
 	# isValidURL=$(curl -IsS --silent -o /dev/null -w '%{http_code}' "${DOT_REPO}")
-	read -p "⚪ Where should I clone $(tput bold)$(basename "${DOT_REPO}")$(tput sgr0) (${HOME}/..): " -r DOT_DEST
+	read -p "⚪ Where should I clone ${BOLD}$(basename "${DOT_REPO}")${RESET} (${HOME}/..): " -r DOT_DEST
 	DOT_DEST=${DOT_DEST:-$HOME}
 	if [[ -d "$HOME/$DOT_DEST" ]]; then
-		printf "\n%s\r\n" "$(tput bold)Calling 📞 Git ... $(tput sgr0)"
+		printf "\n%s\r\n" "${BOLD}Calling 📞 Git ... ${RESET}"
 		# clone the repo in the destination directory
 		if git -C "${HOME}/${DOT_DEST}" clone "${DOT_REPO}"; then
 			add_env "$DOT_REPO" "$DOT_DEST"
@@ -167,7 +167,7 @@ initial_setup() {
 			exit 1
 		fi
 	else
-		echo -e "\n[❌]$(tput bold)$DOT_DEST$(tput sgr0) Not a Valid directory"
+		echo -e "\n[❌]${BOLD}$DOT_DEST${RESET} Not a Valid directory"
 		exit 1
 	fi
 }
