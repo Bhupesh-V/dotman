@@ -27,6 +27,5 @@ If applicable, add screenshots to help explain your problem.
  - OS: [e.g. Ubuntu]
  - Bash Version [e.g. 4.4.20]
 
-
 **Additional context**
 Add any other context about the problem here.

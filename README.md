@@ -86,8 +86,6 @@ sh -c "$(http --download https://raw.githubusercontent.com/Bhupesh-v/dotman/mast
   ./dotman.sh
   ```
 
-> Note: If you install manually, updates to dotman will not be automatically available. You would have to download it from releases in case of any changes. 
-
 
 ## Usage
 
