@@ -23,15 +23,17 @@
   </a>
 </p>
 
-<!--
-<img src="insert gif">
--->
-
 <samp>
   <h3 align="center">
     <a href="">✨ Learn how I made d○tman from scratch ✨</a>
   </h3>
 </samp>
+
+## Demo 🔥
+
+<p align="center">
+  <img alt="dotman-demo" src="https://user-images.githubusercontent.com/34342551/87691530-4d16e280-c7a8-11ea-8f5e-77f50b9635c3.gif">
+</p>
 
 ## 🌠 Features
 

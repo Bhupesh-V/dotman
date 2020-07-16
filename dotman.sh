@@ -43,9 +43,14 @@ repo_check(){
 	if [[ -d ${HOME}/${DOT_DEST}/${DOT_REPO_NAME} ]]; then
 	    echo -e "\nFound ${BOLD}${DOT_REPO_NAME}${RESET} as a dotfile repo in ${BOLD}${HOME}/${DOT_DEST}/${RESET}"
 	else
-	    echo -e "\n\n[❌] ${BOLD}${DOT_REPO_NAME}${RESET} not present inside path ${BOLD}${HOME}/${DOT_DEST}${RESET}."
-	    echo -e "Change current working directory"
-	    exit
+	    echo -e "\n\n[❌] ${BOLD}${DOT_REPO_NAME}${RESET} not present inside path ${BOLD}${HOME}/${DOT_DEST}${RESET}"
+		read -p "Should I clone it ? [Y/n]: " -n 1 -r USER_INPUT
+		USER_INPUT=${USER_INPUT:-y}
+		case $USER_INPUT in
+			[y/Y]* ) clone_dotrepo "$DOT_DEST" "$DOT_REPO" ;;
+			[n/N]* ) echo -e "${BOLD}${DOT_REPO_NAME}${RESET} not found";;
+			* )     printf "\n%s\n" "[❌]Invalid Input 🙄, Try Again";;
+		esac
 	fi
 }
 
@@ -146,6 +151,23 @@ dot_push() {
 	fi
 }
 
+clone_dotrepo (){
+	# clone the repo in the destination directory
+	DOT_DEST=$1
+	DOT_REPO=$2
+	
+	if git -C "${HOME}/${DOT_DEST}" clone "${DOT_REPO}"; then
+		if [[ -z ${DOT_REPO} && -z ${DOT_DEST} ]]; then
+			add_env "$DOT_REPO" "$DOT_DEST"
+		fi
+		echo -e "\n[✔️ ] dotman successfully configured"
+	else
+		# invalid arguments to exit, Repository Not Found
+		echo -e "\n[❌] $DOT_REPO Unavailable. Exiting"
+		exit 1
+	fi
+}
+
 initial_setup() {
 	echo -e "\n\nFirst time use 🔥, Set Up ${BOLD}d○tman${RESET}"
 	echo -e "....................................\n"
@@ -156,16 +178,7 @@ initial_setup() {
 	DOT_DEST=${DOT_DEST:-$HOME}
 	if [[ -d "$HOME/$DOT_DEST" ]]; then
 		printf "\n%s\r\n" "${BOLD}Calling 📞 Git ... ${RESET}"
-		# clone the repo in the destination directory
-		if git -C "${HOME}/${DOT_DEST}" clone "${DOT_REPO}"; then
-			add_env "$DOT_REPO" "$DOT_DEST"
-			echo -e "\n[✔️ ] dotman successfully configured"
-			goodbye
-		else
-			# invalid arguments to exit, Repository Not Found
-			echo -e "\n[❌] $DOT_REPO Unavailable. Exiting"
-			exit 1
-		fi
+		clone_dotrepo "$DOT_DEST" "DOT_REPO"
 	else
 		echo -e "\n[❌]${BOLD}$DOT_DEST${RESET} Not a Valid directory"
 		exit 1
