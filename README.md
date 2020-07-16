@@ -1,4 +1,6 @@
-<h1 align="center">d○tman</h1>
+<p align="center">
+   <img src="https://github.com/Bhupesh-V/dotman/blob/master/assets/dotman-logo.png?raw=true" height="250">
+</p>
 
 <p align="center">
   <a href="https://github.com/Bhupesh-V/dotman/actions">
@@ -21,11 +23,6 @@
   </a>
 </p>
 
-<blockquote>
-  <h3 align="center">
-    d○tman is a simple & elegant (dot)file (man)ager
-  </h3>
-</blockquote>
 <!--
 <img src="insert gif">
 -->
