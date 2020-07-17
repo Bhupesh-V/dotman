@@ -74,6 +74,9 @@ repo_check(){
 
 find_dotfiles() {
 	printf "\n"
+	# while read -r value; do
+	#     dotfiles+=($value)
+	# done < <( find "${HOME}" -maxdepth 1 -name ".*" -type f )
 	readarray -t dotfiles < <( find "${HOME}" -maxdepth 1 -name ".*" -type f )
 	printf '%s\n' "${dotfiles[@]}"
 }
@@ -116,7 +119,7 @@ dot_pull() {
 diff_check() {
 
 	if [[ -z $1 ]]; then
-		local file_arr
+		declare -ag file_arr
 	fi
 
 	# dotfiles in repository

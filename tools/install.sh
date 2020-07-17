@@ -16,11 +16,13 @@
 # Respects the following environment variables:
 #   DOTMAN  - path to the dotman repository folder (default: $HOME/dotman)
 #   REPO    - name of the GitHub repo to install from (default: Bhupesh-V/dotman)
+#   BRANCH  - the branch of upstream dotman repo.
 #   REMOTE  - full remote URL of the git repo to install (default: GitHub via HTTPS)
 
 
 DOTMAN=${DOTMAN:-$HOME/dotman}
 REPO=${REPO:-Bhupesh-V/dotman}
+BRANCH=${BRANCH:-master}
 REMOTE=${REMOTE:-https://github.com/${REPO}.git}
 
 
@@ -39,6 +41,7 @@ status_checks() {
 		exit 1
 	else
 		# Clone repository to /home/username/dotman
+		# git clone $REMOTE --branch $BRANCH --single-branch $HOME
 		git -C "$HOME" clone "$REMOTE"
 	fi
 }
