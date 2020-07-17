@@ -2,12 +2,8 @@
 
 # (.dot)file (man)ager
 
-# Disable debug mode
-set +x
-
 IFS=$'\n'
 
-# this is called a "here document ? heh?"
 DOTMAN_LOGO=$(cat << "LOGO"
 
       _       _                         
@@ -21,11 +17,33 @@ DOTMAN_LOGO=$(cat << "LOGO"
 LOGO
 )
 
-# check if tput is available
-BOLD=$(tput bold)
-RESET=$(tput sgr0)
-FG_SKYBLUE=$(tput setaf 122)
-FG_ORANGE=$(tput setaf 208)
+# check if tput exists
+if ! command -v tput &> /dev/null
+then
+    # tput could not be found
+    BOLD=""
+	RESET=""
+	FG_SKYBLUE=""
+	FG_ORANGE=""
+else
+	BOLD=$(tput bold)
+	RESET=$(tput sgr0)
+	FG_SKYBLUE=$(tput setaf 122)
+	FG_ORANGE=$(tput setaf 208)
+	BG_AQUA=$(tput setab 45)
+	FG_BLACK=$(tput setaf 16)
+	FG_ORANGE=$(tput setaf 214)
+	UL=$(tput smul)
+	RUL=$(tput rmul)
+fi
+
+# check if git exists
+if ! command -v git &> /dev/null
+then
+	printf "%s\n\n" "${BOLD}${FG_SKYBLUE}${DOTMAN_LOGO}${RESET}"
+	echo -e "Can't work without Git 😞"
+	exit 1
+fi
 
 # function called by trap
 catch_ctrl+c() {
@@ -49,7 +67,7 @@ repo_check(){
 		case $USER_INPUT in
 			[y/Y]* ) clone_dotrepo "$DOT_DEST" "$DOT_REPO" ;;
 			[n/N]* ) echo -e "${BOLD}${DOT_REPO_NAME}${RESET} not found";;
-			* )     printf "\n%s\n" "[❌]Invalid Input 🙄, Try Again";;
+			* )     printf "\n%s\n" "[❌] Invalid Input 🙄, Try Again";;
 		esac
 	fi
 }
@@ -82,9 +100,9 @@ add_env() {
 
 goodbye() {
 	printf "\a\n\n%s\n" "${BOLD}Thanks for using d○tman 🖖.${RESET}"
-	printf "\n%s%s" "${BOLD}Follow $(tput setab 45)$(tput setaf 16)@bhupeshimself${RESET}" "${BOLD} on Twitter "
+	printf "\n%s%s" "${BOLD}Follow ${BG_AQUA}${FG_BLACK}@bhupeshimself${RESET}" "${BOLD} on Twitter "
 	printf "%s\n" "for more updates.${RESET}"
-	printf "%s\n" "${BOLD}Report Bugs : $(tput smul)https://github.com/Bhupesh-V/dotman/issues$(tput rmul)${RESET}"
+	printf "%s\n" "${BOLD}Report Bugs : ${UL}https://github.com/Bhupesh-V/dotman/issues${RUL}${RESET}"
 }
 
 dot_pull() {
@@ -112,8 +130,8 @@ diff_check() {
 		diff=$(diff -u --suppress-common-lines --color=always "${dotfiles_repo[$i]}" "${HOME}/${dotfile_name}")
 		if [[ $diff != "" ]]; then
 			if [[ $1 == "show" ]]; then
-				printf "\n\n%s" "Running diff between ${BOLD} $(tput setaf 214)${HOME}/${dotfile_name}${RESET} and "
-				printf "%s\n" "${BOLD}$(tput setaf 214)${dotfiles_repo[$i]}${RESET}"
+				printf "\n\n%s" "Running diff between ${BOLD} ${FG_ORANGE}${HOME}/${dotfile_name}${RESET} and "
+				printf "%s\n" "${BOLD}${FG_ORANGE}${dotfiles_repo[$i]}${RESET}"
 				printf "%s\n\n" "$diff"
 			fi
 			file_arr+=("${dotfile_name}")
@@ -171,10 +189,10 @@ clone_dotrepo (){
 initial_setup() {
 	echo -e "\n\nFirst time use 🔥, Set Up ${BOLD}d○tman${RESET}"
 	echo -e "....................................\n"
-	read -p "⚪ Enter dotfiles repository URL : " -r DOT_REPO
+	read -p "➤ Enter dotfiles repository URL : " -r DOT_REPO
 
 	# isValidURL=$(curl -IsS --silent -o /dev/null -w '%{http_code}' "${DOT_REPO}")
-	read -p "⚪ Where should I clone ${BOLD}$(basename "${DOT_REPO}")${RESET} (${HOME}/..): " -r DOT_DEST
+	read -p "➤ Where should I clone ${BOLD}$(basename "${DOT_REPO}")${RESET} (${HOME}/..): " -r DOT_DEST
 	DOT_DEST=${DOT_DEST:-$HOME}
 	if [[ -d "$HOME/$DOT_DEST" ]]; then
 		printf "\n%s\r\n" "${BOLD}Calling 📞 Git ... ${RESET}"
@@ -220,6 +238,7 @@ init_check() {
 	if [[ -z ${DOT_REPO} && -z ${DOT_DEST} ]]; then
 	    # show first time setup menu
 		initial_setup
+		goodbye
 	else
 		repo_check
 	    manage

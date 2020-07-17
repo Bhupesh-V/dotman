@@ -23,18 +23,27 @@ DOTMAN=${DOTMAN:-$HOME/dotman}
 REPO=${REPO:-Bhupesh-V/dotman}
 REMOTE=${REMOTE:-https://github.com/${REPO}.git}
 
-main () {
+
+status_checks() {
 	if [ -d "$DOTMAN" ]; then
 		cat <<-EOF
-			You already have dotman 🖖 installed.
+			You already have d○tman 🖖 installed.
 			You'll need to remove '$DOTMAN' if you want to reinstall.
 		EOF
 		exit 1
 	fi
 
-	# Clone repository to /home/username/dotman
-	# git -C "$HOME" clone "$REMOTE"
+	if ! command -v git 2>&1 /dev/null
+	then
+		echo "Can't work without Git 😞"
+		exit 1
+	else
+		# Clone repository to /home/username/dotman
+		git -C "$HOME" clone "$REMOTE"
+	fi
+}
 
+set_alias(){
 	if [ -f "$HOME"/.bash_aliases ]; then
 		echo "alias dotman='$HOME/dotman/dotman.sh'" >> "$HOME"/.bash_aliases
 	elif [ "$(basename "SHELL")" = "zsh" ]; then
@@ -46,6 +55,13 @@ main () {
 		echo "Consider adding it manually".
 		exit 1
 	fi
+	echo "[✔️ ] Set alias for d○tman"
+}
+
+main () {
+
+	status_checks
+	set_alias
 
 	cat <<-'EOF'
 
@@ -60,6 +76,6 @@ main () {
 	Run `dotman` to configure first time setup.
 
 	EOF
-	}
+}
 
 main
