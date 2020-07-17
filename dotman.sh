@@ -4,6 +4,8 @@
 
 IFS=$'\n'
 
+set +x
+
 DOTMAN_LOGO=$(cat << "LOGO"
 
       _       _                         
@@ -119,14 +121,14 @@ dot_pull() {
 diff_check() {
 
 	if [[ -z $1 ]]; then
-		declare -ag file_arr
+		local file_arr
 	fi
 
 	# dotfiles in repository
 	readarray -t dotfiles_repo < <( find "${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")" -maxdepth 1 -name ".*" -type f )
 
 	# check length here ?
-	for (( i=0; i<"${#dotfiles_repo[@]}"; i++))
+	for i in "${!dotfiles_repo[@]}"
 	do
 		dotfile_name=$(basename "${dotfiles_repo[$i]}")
 		# compare the HOME version of dotfile to that of repo
@@ -161,12 +163,12 @@ dot_push() {
 
 		dot_repo="${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")"
 		git -C "$dot_repo" add -A
-		
+
 		echo -e "${BOLD}Enter Commit Message (Ctrl + d to save): ${RESET}"
 		commit=$(</dev/stdin)
-		echo -e "\n\n$commit"
+		# echo -e "\n\n$commit"
 		git -C "$dot_repo" commit -m "$commit"
-		
+
 		# Run Git Push
 		git -C "$dot_repo" push
 	fi
