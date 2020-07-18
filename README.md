@@ -23,11 +23,13 @@
   </a>
 </p>
 
+<!--
 <samp>
   <h3 align="center">
     <a href="">✨ Learn how I made d○tman from scratch ✨</a>
   </h3>
 </samp>
+-->
 
 ## Demo 🔥
 
