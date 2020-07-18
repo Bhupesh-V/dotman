@@ -76,6 +76,8 @@ main () {
 	  \__,_|\___/ \__|_| |_| |_|\__,_|_| |_|
 	                                         .... is now installed
 
+
+	Run `dotman version` to check latest version.
 	Run `dotman` to configure first time setup.
 
 	EOF

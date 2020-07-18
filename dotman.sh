@@ -6,6 +6,7 @@ IFS=$'\n'
 
 set +x
 
+VERSION="v0.1.0"
 DOTMAN_LOGO=$(cat << "LOGO"
 
       _       _                         
@@ -255,10 +256,14 @@ init_check() {
 
 
 if [[ $1 == "version" || $1 == "--version" || $1 == "-v" ]]; then
-	latest_tag=$(git describe --tags --abbrev=0)
-	latest_tag_push=$(git log -1 --format=%ai "${latest_tag}")
-	echo -e "${BOLD}dotman ${latest_tag} ${RESET}"
-	echo -e "Pushed at: ${BOLD}${latest_tag_push}${RESET}"
+	if [[ -d "$HOME/dotman" ]]; then
+		latest_tag=$(git -C "$HOME/dotman" describe --tags --abbrev=0)
+		latest_tag_push=$(git -C "$HOME/dotman" log -1 --format=%ai "${latest_tag}")
+		echo -e "${BOLD}dotman ${latest_tag} ${RESET}"
+		echo -e "Released on: ${BOLD}${latest_tag_push}${RESET}"
+	else
+		echo -e "${BOLD}dotman ${VERSION}${RESET}"
+	fi
 	exit
 fi
 
