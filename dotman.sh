@@ -171,6 +171,9 @@ dot_push() {
 
 		# Run Git Push
 		git -C "$dot_repo" push
+	else
+		echo -e "\n\n${BOLD}No Changes in dotfiles.${RESET}"
+		return
 	fi
 }
 
@@ -250,6 +253,14 @@ init_check() {
 	fi
 }
 
+
+if [[ $1 == "version" || $1 == "--version" || $1 == "-v" ]]; then
+	latest_tag=$(git describe --tags --abbrev=0)
+	latest_tag_push=$(git log -1 --format=%ai "${latest_tag}")
+	echo -e "${BOLD}dotman ${latest_tag} ${RESET}"
+	echo -e "Pushed at: ${BOLD}${latest_tag_push}${RESET}"
+	exit
+fi
 
 intro
 init_check
