@@ -15,21 +15,21 @@
   <a href="https://github.com/ellerbrock/open-source-badges">
     <img alt="bashit" src="https://badges.frapsoft.com/bash/v1/bash.png?v=103">
   </a>
-  <a href="">
-    <img alt="Website Status" src="https://img.shields.io/website?down_color=red&down_message=down&up_color=darkgreen&up_message=up&url=https%3A%2F%2Fwebsite.com" />
+  <a href="https://bhupesh.codes/dotman">
+    <img alt="Website Status dotman" src="https://img.shields.io/website?url=https%3A%2F%2Fbhupesh.codes%2Fdotman">
   </a>
   <a href="https://twitter.com/bhupeshimself">
     <img alt="Twitter: bhupeshimself" src="https://img.shields.io/twitter/follow/bhupeshimself.svg?style=social" target="_blank" />
   </a>
 </p>
 
-<!--
+
 <samp>
   <h3 align="center">
-    <a href="">✨ Learn how I made d○tman from scratch ✨</a>
+    <a href="https://www.freecodecamp.org/news/build-your-own-dotfiles-manager-from-scratch/">✨ Learn how I made d○tman from scratch ✨</a>
   </h3>
 </samp>
--->
+
 
 ## Demo 🔥
 
