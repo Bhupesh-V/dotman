@@ -205,7 +205,7 @@ initial_setup() {
 	DOT_DEST=${DOT_DEST:-$HOME}
 	if [[ -d "$HOME/$DOT_DEST" ]]; then
 		printf "\n%s\r\n" "${BOLD}Calling 📞 Git ... ${RESET}"
-		clone_dotrepo "$DOT_DEST" "DOT_REPO"
+		clone_dotrepo "$DOT_DEST" "$DOT_REPO"
 	else
 		echo -e "\n[❌]${BOLD}$DOT_DEST${RESET} Not a Valid directory"
 		exit 1
