@@ -1,7 +1,4 @@
 <p align="center">
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
    <img src="https://github.com/Bhupesh-V/dotman/blob/master/assets/dotman-logo.png?raw=true" height="250">
 </p>
 
@@ -17,6 +14,9 @@
   </a>
   <a href="https://github.com/ellerbrock/open-source-badges">
     <img alt="bashit" src="https://badges.frapsoft.com/bash/v1/bash.png?v=103">
+  </a>
+  <a href="#contributors-">
+     <img alt="All Contributors" src="https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square">
   </a>
   <a href="https://bhupesh.codes/dotman">
     <img alt="Website Status dotman" src="https://img.shields.io/website?url=https%3A%2F%2Fbhupesh.codes%2Fdotman">
