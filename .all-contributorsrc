@@ -13,6 +13,16 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "tadomaitis",
+      "name": "Thiago Adomaitis",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/20560225?v=4",
+      "profile": "https://github.com/tadomaitis",
+      "contributions": [
+        "bug",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
