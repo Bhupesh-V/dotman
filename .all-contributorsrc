@@ -23,6 +23,15 @@
         "bug",
         "code"
       ]
+    },
+    {
+      "login": "smenzer",
+      "name": "Scott",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/624392?v=4",
+      "profile": "http://scott.menzer.org",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
