@@ -28,21 +28,23 @@ REMOTE=${REMOTE:-https://github.com/${REPO}.git}
 
 status_checks() {
 	if [ -d "$DOTMAN" ]; then
-		printf "\n\t%s\n" "You already have d○tman 🖖 installed."
-		printf "\n\t%s\n" "You'll need to remove '$DOTMAN' if you want to reinstall."
-		exit 1
+		printf "\n\t%s\n" "You already have ${BOLD}d○tman${RESET} 🖖 installed."
+		printf "\n\t%s\n\n" "You'll need to remove '$DOTMAN' if you want to reinstall."
+		exit 0
 	fi
 
-	if ! command -v git 2>&1 /dev/null
-	then
-		echo "Can't work without Git 😞"
+	if ! command -v git 2>&1 /dev/null; then
+		printf "\n%s\n" "${BOLD}Can't work without Git 😞${RESET}"
 		exit 1
 	else
 		# Clone repository to /home/username/dotman
 		# git clone $REMOTE --branch $BRANCH --single-branch $HOME
 		all_releases=$(git ls-remote --ref -t --sort='-v:refname' "$REMOTE" | head -n 1)
 		# ##*/ retains the part after last /
-		git clone -b "${all_releases##*/}" --branch "$BRANCH" --single-branch --depth 1 "$REMOTE"
+		git -C "$HOME" clone -b "${all_releases##*/}" --branch "$BRANCH" --single-branch --depth 1 "$REMOTE"
+		if [ -d "$DOTMAN" ]; then
+			echo "${BOLD}[✔️ ] Successfully cloned d○tman${RESET}"
+		fi
 	fi
 }
 
@@ -54,11 +56,11 @@ set_alias(){
 	elif [ "$(basename "SHELL")" = "bash" ]; then
 		echo "alias dotman='$HOME/dotman/dotman.sh'" >> "$HOME"/.bashrc
 	else
-		echo "Couldn't set alias to dotman: $(tput bold)$HOME/dotman/dotman.sh$(tput sgr0)"
+		echo "Couldn't set alias to dotman: ${BOLD}$HOME/dotman/dotman.sh${RESET}"
 		echo "Consider adding it manually".
 		exit 1
 	fi
-	echo "[✔️ ] Set alias for d○tman"
+	echo "${BOLD}[✔️ ] Set alias for d○tman${RESET}"
 }
 
 main () {
@@ -82,5 +84,16 @@ main () {
 
 	EOF
 }
+
+# check if tput exists
+if ! command -v tput /dev/null 2>&1
+then
+    # tput could not be found :(
+    BOLD=""
+	RESET=""
+else
+	BOLD=$(tput bold)
+	RESET=$(tput sgr0)
+fi
 
 main
