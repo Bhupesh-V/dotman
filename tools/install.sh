@@ -28,10 +28,8 @@ REMOTE=${REMOTE:-https://github.com/${REPO}.git}
 
 status_checks() {
 	if [ -d "$DOTMAN" ]; then
-		cat <<-EOF
-			You already have d○tman 🖖 installed.
-			You'll need to remove '$DOTMAN' if you want to reinstall.
-		EOF
+		printf "\n\t%s\n" "You already have d○tman 🖖 installed."
+		printf "\n\t%s\n" "You'll need to remove '$DOTMAN' if you want to reinstall."
 		exit 1
 	fi
 
@@ -42,6 +40,8 @@ status_checks() {
 	else
 		# Clone repository to /home/username/dotman
 		# git clone $REMOTE --branch $BRANCH --single-branch $HOME
+		# latest_tag=$(git ls-remote --ref -t --sort='-v:refname' $REMOTE | head -n 1)
+		# git clone -b '${latest_tag:(-6)}' --single-branch --depth 1 $REMOTE
 		git -C "$HOME" clone "$REMOTE"
 	fi
 }

@@ -4,8 +4,6 @@
 
 IFS=$'\n'
 
-set +x
-
 VERSION="v0.1.0"
 DOTMAN_LOGO=$(cat << "LOGO"
 
@@ -44,7 +42,7 @@ fi
 if ! command -v git &> /dev/null
 then
 	printf "%s\n\n" "${BOLD}${FG_SKYBLUE}${DOTMAN_LOGO}${RESET}"
-	echo -e "Can't work without Git 😞"
+	echo "Can't work without Git 😞"
 	exit 1
 fi
 
@@ -62,14 +60,14 @@ repo_check(){
 	DOT_REPO_NAME=$(basename "${DOT_REPO}")
 	# all paths are relative to HOME
 	if [[ -d ${HOME}/${DOT_DEST}/${DOT_REPO_NAME} ]]; then
-	    echo -e "\nFound ${BOLD}${DOT_REPO_NAME}${RESET} as a dotfile repo in ${BOLD}${HOME}/${DOT_DEST}/${RESET}"
+	    printf "\n%s\n" "Found ${BOLD}${DOT_REPO_NAME}${RESET} as a dotfile repo in ${BOLD}${HOME}/${DOT_DEST}/${RESET}"
 	else
-	    echo -e "\n\n[❌] ${BOLD}${DOT_REPO_NAME}${RESET} not present inside path ${BOLD}${HOME}/${DOT_DEST}${RESET}"
+	    printf "\n\n%s" "[❌] ${BOLD}${DOT_REPO_NAME}${RESET} not present inside path ${BOLD}${HOME}/${DOT_DEST}${RESET}"
 		read -p "Should I clone it ? [Y/n]: " -n 1 -r USER_INPUT
 		USER_INPUT=${USER_INPUT:-y}
 		case $USER_INPUT in
 			[y/Y]* ) clone_dotrepo "$DOT_DEST" "$DOT_REPO" ;;
-			[n/N]* ) echo -e "${BOLD}${DOT_REPO_NAME}${RESET} not found";;
+			[n/N]* ) printf "\n%s" "${BOLD}${DOT_REPO_NAME}${RESET} not found";;
 			* )     printf "\n%s\n" "[❌] Invalid Input 🙄, Try Again";;
 		esac
 	fi
@@ -86,7 +84,7 @@ find_dotfiles() {
 
 add_env() {
 	# export environment variables
-	echo -e "\nExporting env variables DOT_DEST & DOT_REPO ..."
+	printf "\n%s" "\nExporting env variables DOT_DEST & DOT_REPO ..."
 
 	current_shell=$(basename "$SHELL")
 	if [[ $current_shell == "zsh" ]]; then
@@ -101,21 +99,21 @@ add_env() {
 		echo "Consider exporting them manually".
 		exit 1
 	fi
-	echo -e "Configuration for SHELL: ${BOLD}$current_shell${RESET} has been updated."
+	echo "Configuration for SHELL: ${BOLD}$current_shell${RESET} has been updated."
 }
 
 goodbye() {
 	printf "\a\n\n%s\n" "${BOLD}Thanks for using d○tman 🖖.${RESET}"
 	printf "\n%s%s" "${BOLD}Follow ${BG_AQUA}${FG_BLACK}@bhupeshimself${RESET}" "${BOLD} on Twitter "
 	printf "%s\n" "for more updates.${RESET}"
-	printf "%s\n" "${BOLD}Report Bugs : ${UL}https://github.com/Bhupesh-V/dotman/issues${RUL}${RESET}"
+	printf "%s\n" "${BOLD}Report Bugs 🐛 @ ${UL}https://github.com/Bhupesh-V/dotman/issues${RUL}${RESET}"
 }
 
 dot_pull() {
-	# pull changes (if any) from the host repo
-	echo -e "\n${BOLD}Pulling dotfiles ...${RESET}"
+	# pull changes (if any) from the remote repo
+	printf "\n%s\n" "${BOLD}Pulling dotfiles ...${RESET}"
 	dot_repo="${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")"
-	echo -e "\nPulling changes in $dot_repo\n"
+	printf "\n%s\n" "Pulling changes in $dot_repo"
 	git -C "$dot_repo" pull origin master
 }
 
@@ -144,7 +142,7 @@ diff_check() {
 		fi
 	done
 	if [[ ${#file_arr} == 0 ]]; then
-		echo -e "\n\n${BOLD}No Changes in dotfiles.${RESET}"
+		printf "\n\n%s\n" "${BOLD}No Changes in dotfiles.${RESET}"
 		return
 	fi
 }
@@ -156,7 +154,7 @@ show_diff_check() {
 dot_push() {
 	diff_check
 	if [[ ${#file_arr} != 0 ]]; then
-		echo -e "\n${BOLD}Following dotfiles changed${RESET}"
+		printf "\n%s" "${BOLD}Following dotfiles changed${RESET}"
 		for file in "${file_arr[@]}"; do
 			echo "$file"
 			cp "${HOME}/$file" "${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")"
@@ -165,15 +163,14 @@ dot_push() {
 		dot_repo="${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")"
 		git -C "$dot_repo" add -A
 
-		echo -e "${BOLD}Enter Commit Message (Ctrl + d to save): ${RESET}"
+		echo "${BOLD}Enter Commit Message (Ctrl + d to save): ${RESET}"
 		commit=$(</dev/stdin)
-		# echo -e "\n\n$commit"
+		printf "\n"
 		git -C "$dot_repo" commit -m "$commit"
 
 		# Run Git Push
 		git -C "$dot_repo" push
 	else
-		echo -e "\n\n${BOLD}No Changes in dotfiles.${RESET}"
 		return
 	fi
 }
@@ -187,27 +184,26 @@ clone_dotrepo (){
 		if [[ -z ${DOT_REPO} && -z ${DOT_DEST} ]]; then
 			add_env "$DOT_REPO" "$DOT_DEST"
 		fi
-		echo -e "\n[✔️ ] dotman successfully configured"
+		printf "\n%s" "[✔️ ] dotman successfully configured"
 	else
 		# invalid arguments to exit, Repository Not Found
-		echo -e "\n[❌] $DOT_REPO Unavailable. Exiting"
+		printf "\n%s" "[❌] $DOT_REPO Unavailable. Exiting !"
 		exit 1
 	fi
 }
 
 initial_setup() {
-	echo -e "\n\nFirst time use 🔥, Set Up ${BOLD}d○tman${RESET}"
-	echo -e "....................................\n"
+	printf "\n\n%s" "First time use 🔥, Set Up ${BOLD}d○tman${RESET}"
+	printf "%s\n" "...................................."
 	read -p "➤ Enter dotfiles repository URL : " -r DOT_REPO
 
-	# isValidURL=$(curl -IsS --silent -o /dev/null -w '%{http_code}' "${DOT_REPO}")
 	read -p "➤ Where should I clone ${BOLD}$(basename "${DOT_REPO}")${RESET} (${HOME}/..): " -r DOT_DEST
 	DOT_DEST=${DOT_DEST:-$HOME}
 	if [[ -d "$HOME/$DOT_DEST" ]]; then
 		printf "\n%s\r\n" "${BOLD}Calling 📞 Git ... ${RESET}"
 		clone_dotrepo "$DOT_DEST" "$DOT_REPO"
 	else
-		echo -e "\n[❌]${BOLD}$DOT_DEST${RESET} Not a Valid directory"
+		printf "\n%s" "[❌]${BOLD}$DOT_DEST${RESET} Not a Valid directory"
 		exit 1
 	fi
 }
@@ -215,13 +211,13 @@ initial_setup() {
 manage() {
 	while :
 	do
-		echo -e "\n[1] Show diff"
-		echo -e "[2] Push changed dotfiles to remote"
-		echo -e "[3] Pull latest changes from remote"
-		echo -e "[4] List all dotfiles"
-		echo -e "[q/Q] Quit Session"
+		printf "\n%s" "[${BOLD}1${RESET}] Show diff"
+		printf "\n%s" "[${BOLD}2${RESET}] Push changed dotfiles"
+		printf "\n%s" "[${BOLD}3${RESET}] Pull latest changes"
+		printf "\n%s" "[${BOLD}4${RESET}] List all dotfiles"
+		printf "\n%s\n" "[${BOLD}q/Q${RESET}] Quit Session"
 		# Default choice is [1]
-		read -p "What do you want me to do ? [1]: " -n 1 -r USER_INPUT
+		read -p "What do you want me to do ? [${BOLD}1${RESET}]: " -n 1 -r USER_INPUT
 		# See Parameter Expansion
 		USER_INPUT=${USER_INPUT:-1}
 		case $USER_INPUT in
@@ -238,7 +234,7 @@ manage() {
 
 intro() {
 	BOSS_NAME=$LOGNAME
-	echo -e "\n\aHi ${BOLD}${FG_ORANGE}$BOSS_NAME${RESET} 👋"
+	printf "\n\a%s" "Hi ${BOLD}${FG_ORANGE}$BOSS_NAME${RESET} 👋"
 	printf "%s" "${BOLD}${FG_SKYBLUE}${DOTMAN_LOGO}${RESET}"	
 }
 
@@ -259,10 +255,10 @@ if [[ $1 == "version" || $1 == "--version" || $1 == "-v" ]]; then
 	if [[ -d "$HOME/dotman" ]]; then
 		latest_tag=$(git -C "$HOME/dotman" describe --tags --abbrev=0)
 		latest_tag_push=$(git -C "$HOME/dotman" log -1 --format=%ai "${latest_tag}")
-		echo -e "${BOLD}dotman ${latest_tag} ${RESET}"
-		echo -e "Released on: ${BOLD}${latest_tag_push}${RESET}"
+		echo "${BOLD}dotman ${latest_tag} ${RESET}"
+		echo "Released on: ${BOLD}${latest_tag_push}${RESET}"
 	else
-		echo -e "${BOLD}dotman ${VERSION}${RESET}"
+		echo "${BOLD}dotman ${VERSION}${RESET}"
 	fi
 	exit
 fi
