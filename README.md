@@ -39,31 +39,31 @@
 
 ## 🌠 Features
 
-* Single file
-* No config file for dotman (No `.dotrc` 🤦)
-* No useless arguments (single command 😎)
-* Easy to use
-* Extendable ⚒, _Available as a Template_
-* Fewer Dependencies
-  - `Git`
-  - `Bash`
+* **Single file**
+* **No config files for dotman (No `.dotrc` 🤦)**
+* **No useless arguments (single command 😎)**
+* **Easy to use**
+* **Extendable ⚒, _Available as a Template_**
+* **Fewer Dependencies**
+  - **`Git`**
+  - **`Bash`**
 
 
 ## 💠 Installation
 
-### via curl ➰
+### via `curl` ➰
 
 ```shell
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/Bhupesh-v/dotman/master/tools/install.sh)"
 ```
 
-### via wget 📥
+### via `wget` 📥
 
 ```shell
 sh -c "$(wget -O- https://raw.githubusercontent.com/Bhupesh-v/dotman/master/tools/install.sh)"
 ```
 
-### via httpie 🥧
+### via `httpie` 🥧
 
 ```shell
 sh -c "$(http --download https://raw.githubusercontent.com/Bhupesh-v/dotman/master/tools/install.sh)"
@@ -131,11 +131,15 @@ Support me by giving a ⭐️ if this project helped you! or just [![Twitter URL
 Copyright © 2020 [Bhupesh Varshney](https://github.com/Bhupesh-V).<br />
 This project is [MIT](https://github.com/Bhupesh-V/dotman/blob/master/LICENSE) licensed.
 
+## 📝 Changelog
+
+See the [CHANGELOG.md](CHANGELOG.md) file for details.
+
 ## 👋 Contributing
 
 Please read the [CONTRIBUTING](CONTRIBUTING.md) file for the process of submitting pull requests to us.
 
-## Contributors ✨
+## ✨ Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 

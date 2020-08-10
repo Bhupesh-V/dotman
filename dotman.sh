@@ -26,6 +26,11 @@ then
 	RESET=""
 	FG_SKYBLUE=""
 	FG_ORANGE=""
+	BG_AQUA=""
+	FG_BLACK=""
+	FG_ORANGE=""
+	UL=""
+	RUL=""
 else
 	BOLD=$(tput bold)
 	RESET=$(tput sgr0)
@@ -196,9 +201,9 @@ initial_setup() {
 	printf "\n\n%s" "First time use 🔥, Set Up ${BOLD}d○tman${RESET}"
 	printf "%s\n" "...................................."
 	read -p "➤ Enter dotfiles repository URL : " -r DOT_REPO
-
 	read -p "➤ Where should I clone ${BOLD}$(basename "${DOT_REPO}")${RESET} (${HOME}/..): " -r DOT_DEST
 	DOT_DEST=${DOT_DEST:-$HOME}
+
 	if [[ -d "$HOME/$DOT_DEST" ]]; then
 		printf "\n%s\r\n" "${BOLD}Calling 📞 Git ... ${RESET}"
 		clone_dotrepo "$DOT_DEST" "$DOT_REPO"
@@ -241,7 +246,6 @@ intro() {
 init_check() {
 	# Check wether its a first time use or not
 	if [[ -z ${DOT_REPO} && -z ${DOT_DEST} ]]; then
-	    # show first time setup menu
 		initial_setup
 		goodbye
 	else

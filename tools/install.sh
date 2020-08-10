@@ -40,9 +40,9 @@ status_checks() {
 	else
 		# Clone repository to /home/username/dotman
 		# git clone $REMOTE --branch $BRANCH --single-branch $HOME
-		# latest_tag=$(git ls-remote --ref -t --sort='-v:refname' $REMOTE | head -n 1)
-		# git clone -b '${latest_tag:(-6)}' --single-branch --depth 1 $REMOTE
-		git -C "$HOME" clone "$REMOTE"
+		all_releases=$(git ls-remote --ref -t --sort='-v:refname' "$REMOTE" | head -n 1)
+		# ##*/ retains the part after last /
+		git clone -b "${all_releases##*/}" --branch "$BRANCH" --single-branch --depth 1 "$REMOTE"
 	fi
 }
 
