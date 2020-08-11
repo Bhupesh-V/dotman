@@ -16,7 +16,7 @@
 # Respects the following environment variables:
 #   DOTMAN  - path to the dotman repository folder (default: $HOME/dotman)
 #   REPO    - name of the GitHub repo to install from (default: Bhupesh-V/dotman)
-#   BRANCH  - the branch of upstream dotman repo.
+#   BRANCH  - the main branch of upstream dotman repo (default: master)
 #   REMOTE  - full remote URL of the git repo to install (default: GitHub via HTTPS)
 
 
@@ -33,7 +33,7 @@ status_checks() {
 		exit 0
 	fi
 
-	if ! command -v git 2>&1 /dev/null; then
+	if ! command -v git > /dev/null 2>&1; then
 		printf "\n%s\n" "${BOLD}Can't work without Git 😞${RESET}"
 		exit 1
 	else
@@ -86,8 +86,7 @@ main () {
 }
 
 # check if tput exists
-if ! command -v tput /dev/null 2>&1
-then
+if ! command -v tput > /dev/null 2>&1; then
     # tput could not be found :(
     BOLD=""
 	RESET=""

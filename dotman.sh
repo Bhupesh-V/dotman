@@ -19,8 +19,7 @@ LOGO
 )
 
 # check if tput exists
-if ! command -v tput &> /dev/null
-then
+if ! command -v tput &> /dev/null; then
     # tput could not be found
     BOLD=""
 	RESET=""
@@ -44,8 +43,7 @@ else
 fi
 
 # check if git exists
-if ! command -v git &> /dev/null
-then
+if ! command -v git &> /dev/null; then
 	printf "%s\n\n" "${BOLD}${FG_SKYBLUE}${DOTMAN_LOGO}${RESET}"
 	echo "Can't work without Git 😞"
 	exit 1
@@ -221,9 +219,8 @@ manage() {
 		printf "\n%s" "[${BOLD}3${RESET}] Pull latest changes"
 		printf "\n%s" "[${BOLD}4${RESET}] List all dotfiles"
 		printf "\n%s\n" "[${BOLD}q/Q${RESET}] Quit Session"
-		# Default choice is [1]
 		read -p "What do you want me to do ? [${BOLD}1${RESET}]: " -n 1 -r USER_INPUT
-		# See Parameter Expansion
+		# Default choice is [1], See Parameter Expansion
 		USER_INPUT=${USER_INPUT:-1}
 		case $USER_INPUT in
 			[1]* ) show_diff_check;;
@@ -259,7 +256,7 @@ if [[ $1 == "version" || $1 == "--version" || $1 == "-v" ]]; then
 	if [[ -d "$HOME/dotman" ]]; then
 		latest_tag=$(git -C "$HOME/dotman" describe --tags --abbrev=0)
 		latest_tag_push=$(git -C "$HOME/dotman" log -1 --format=%ai "${latest_tag}")
-		echo "${BOLD}dotman ${latest_tag} ${RESET}"
+		echo "${BOLD}d○tman ${latest_tag} ${RESET}"
 		echo "Released on: ${BOLD}${latest_tag_push}${RESET}"
 	else
 		echo "${BOLD}dotman ${VERSION}${RESET}"
