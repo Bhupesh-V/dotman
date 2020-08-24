@@ -5,18 +5,6 @@
 IFS=$'\n'
 
 VERSION="v0.1.0"
-DOTMAN_LOGO=$(cat << "LOGO"
-
-      _       _                         
-     | |     | |                        
-   __| | ___ | |_ _ __ ___   __ _ _ __  
-  / _` |/ _ \| __| '_ ` _ \ / _` | '_ \ 
- | (_| | (_) | |_| | | | | | (_| | | | |
-  \__,_|\___/ \__|_| |_| |_|\__,_|_| |_|
-                                        
-
-LOGO
-)
 
 # check if tput exists
 if ! command -v tput &> /dev/null; then
@@ -42,6 +30,18 @@ else
 	RUL=$(tput rmul)
 fi
 
+logo() {
+	# print dotman logo
+	printf "${BOLD}${FG_SKYBLUE}%s\n" ""
+	printf "%s\n" "      _       _                         "
+	printf "%s\n" "     | |     | |                        "
+	printf "%s\n" "   __| | ___ | |_ _ __ ___   __ _ _ __  "
+	printf "%s\n" "  / _\` |/ _ \| __| \`_ ' _ \ / _' | '_ \ "
+	printf "%s\n" " | (_| | (_) | |_| | | | | | (_| | | | |"
+	printf "%s\n" "  \__,_|\___/ \__|_| |_| |_|\__,_|_| |_|"
+	printf "${RESET}\n%s" ""
+}
+
 # check if git exists
 if ! command -v git &> /dev/null; then
 	printf "%s\n\n" "${BOLD}${FG_SKYBLUE}${DOTMAN_LOGO}${RESET}"
@@ -63,7 +63,7 @@ repo_check(){
 	DOT_REPO_NAME=$(basename "${DOT_REPO}")
 	# all paths are relative to HOME
 	if [[ -d ${HOME}/${DOT_DEST}/${DOT_REPO_NAME} ]]; then
-	    printf "\n%s\n" "Found ${BOLD}${DOT_REPO_NAME}${RESET} as a dotfile repo in ${BOLD}${HOME}/${DOT_DEST}/${RESET}"
+	    printf "\n%s\n" "Found ${BOLD}${DOT_REPO_NAME}${RESET} as dotfile repo in ${BOLD}~/${DOT_DEST}/${RESET}"
 	else
 	    printf "\n\n%s" "[❌] ${BOLD}${DOT_REPO_NAME}${RESET} not present inside path ${BOLD}${HOME}/${DOT_DEST}${RESET}"
 		read -p "Should I clone it ? [Y/n]: " -n 1 -r USER_INPUT
@@ -145,7 +145,7 @@ diff_check() {
 		fi
 	done
 	if [[ ${#file_arr} == 0 ]]; then
-		printf "\n\n%s\n" "${BOLD}No Changes in dotfiles.${RESET}"
+		printf "\n%s\n" "${BOLD}No Changes in dotfiles.${RESET}"
 		return
 	fi
 }
@@ -157,7 +157,7 @@ show_diff_check() {
 dot_push() {
 	diff_check
 	if [[ ${#file_arr} != 0 ]]; then
-		printf "\n%s" "${BOLD}Following dotfiles changed${RESET}"
+		printf "\n%s\n" "${BOLD}Following dotfiles changed${RESET}"
 		for file in "${file_arr[@]}"; do
 			echo "$file"
 			cp "${HOME}/$file" "${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")"
