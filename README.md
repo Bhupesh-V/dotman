@@ -12,11 +12,14 @@
   <a href="https://github.com/Bhupesh-V/dotman/issues">
     <img alt="Issues" src="https://img.shields.io/github/issues/Bhupesh-V/dotman?color=blueviolet" />
   </a>
-  <a href="https://github.com/ellerbrock/open-source-badges">
-    <img alt="bashit" src="https://badges.frapsoft.com/bash/v1/bash.png?v=103">
+  <a href="">
+    <img alt="platform: linux and macos" src="https://img.shields.io/badge/platform-Linux%7CMacOS-blue">
   </a>
-  <a href="https://bhupesh.codes/dotman">
-    <img alt="Website Status dotman" src="https://img.shields.io/website?url=https%3A%2F%2Fbhupesh.codes%2Fdotman">
+  <a href="https://github.com/ellerbrock/open-source-badges">
+    <img alt="bash love" src="https://raw.githubusercontent.com/ellerbrock/open-source-badges/master/badges/bash-v1/bash.png">
+  </a>
+  <a href="https://bhupesh-v.github.io/dotman">
+    <img alt="Website Status dotman" src="https://img.shields.io/website?url=https%3A%2F%2Fbhupesh-v.github.io%2Fdotman">
   </a>
   <a href="https://twitter.com/bhupeshimself">
     <img alt="Twitter: bhupeshimself" src="https://img.shields.io/twitter/follow/bhupeshimself.svg?style=social" target="_blank" />
