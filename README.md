@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://github.com/Bhupesh-V/dotman/actions">
-    <img alt="shellcheck" src="https://github.com/Bhupesh-V/dotman/workflows/shellcheck/badge.svg?branch=master">
+    <img alt="build status badge" src="https://github.com/Bhupesh-V/dotman/workflows/build/badge.svg?branch=master">
   </a>
   <a href="https://github.com/Bhupesh-V/dotman/blob/master/LICENSE">
     <img alt="License: MIT" src="https://img.shields.io/github/license/Bhupesh-V/dotman" />
