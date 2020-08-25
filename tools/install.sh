@@ -39,11 +39,13 @@ status_checks() {
 	else
 		# Clone repository to /home/username/dotman
 		# git clone $REMOTE --branch $BRANCH --single-branch $HOME
-		all_releases=$(git ls-remote --ref -t --sort='-v:refname' "$REMOTE" | head -n 1)
+		latest_tag=$(git ls-remote --ref -t --sort='-v:refname' "$REMOTE" | head -n 1)
 		# ##*/ retains the part after last /
-		git -C "$HOME" clone -b "${all_releases##*/}" --branch "$BRANCH" --single-branch --depth 1 "$REMOTE"
+		git -C "$HOME" clone -b "${latest_tag##*/}" --branch "$BRANCH" --single-branch --depth 1 "$REMOTE"
 		if [ -d "$DOTMAN" ]; then
 			echo "${BOLD}[✔️ ] Successfully cloned d○tman${RESET}"
+		else
+			echo "${BOLD}[❌] Error cloning d○tman${RESET}"
 		fi
 	fi
 }
