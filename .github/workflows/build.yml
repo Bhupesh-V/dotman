@@ -13,11 +13,10 @@ jobs:
     name: Linux Test
     runs-on: ubuntu-20.04
     steps:
+    - uses: actions/checkout@master
     - name: Run ShellCheck
-      run: |
-        shellcheck dotman.sh
-        shellcheck tools/install.sh
-    - name: Bash Testing
+      uses: ludeeus/action-shellcheck@0.3.0
+    - name: Syntax Testing
       # -n : ead  commands  but  do  not  execute  them.  This may be used to check a shell script for syntax errors.  This is ignored by interactive shells.
       run : |
           bash -n dotman.sh
