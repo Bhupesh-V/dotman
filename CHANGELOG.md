@@ -2,11 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-## [x.x.x] - July x , 2020
+## [0.2.0] - July x , 2020
 
-### Added
 ### Changed
 - Now, Manage menu option numbers appear in **bold**.
+- Rename options in `manage` menu.
 - Minor tooling 🔧 updates.
   - `install.sh` now only installs tagged releases by default.
 

@@ -4,7 +4,7 @@
 
 IFS=$'\n'
 
-VERSION="v0.1.0"
+VERSION="v0.2.0"
 
 # check if tput exists
 if ! command -v tput &> /dev/null; then
@@ -122,9 +122,7 @@ dot_pull() {
 
 diff_check() {
 
-	if [[ -z $1 ]]; then
-		local file_arr
-	fi
+	[[ -z $1 ]] && local file_arr
 
 	# dotfiles in repository
 	readarray -t dotfiles_repo < <( find "${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")" -maxdepth 1 -name ".*" -type f )
@@ -144,10 +142,8 @@ diff_check() {
 			file_arr+=("${dotfile_name}")
 		fi
 	done
-	if [[ ${#file_arr} == 0 ]]; then
-		printf "\n%s\n" "${BOLD}No Changes in dotfiles.${RESET}"
-		return
-	fi
+
+	[ ${#file_arr} == 0 ] && printf "\n%s\n" "${BOLD}No Changes in dotfiles.${RESET}";return
 }
 
 show_diff_check() {
@@ -237,7 +233,7 @@ manage() {
 intro() {
 	BOSS_NAME=$LOGNAME
 	printf "\n\a%s" "Hi ${BOLD}${FG_ORANGE}$BOSS_NAME${RESET} 👋"
-	printf "%s" "${BOLD}${FG_SKYBLUE}${DOTMAN_LOGO}${RESET}"	
+	logo
 }
 
 init_check() {

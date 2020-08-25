@@ -9,9 +9,6 @@
   <a href="https://github.com/Bhupesh-V/dotman/blob/master/LICENSE">
     <img alt="License: MIT" src="https://img.shields.io/github/license/Bhupesh-V/dotman" />
   </a>
-  <a href="https://github.com/Bhupesh-V/dotman/issues">
-    <img alt="Issues" src="https://img.shields.io/github/issues/Bhupesh-V/dotman?color=blueviolet" />
-  </a>
   <a href="">
     <img alt="platform: linux and macos" src="https://img.shields.io/badge/platform-Linux%7CMacOS-blue">
   </a>
@@ -43,13 +40,13 @@
 ## 🌠 Features
 
 * **Single file**
-* **No config files for dotman (No `.dotrc` 🤦)**
-* **No useless arguments (single command 😎)**
+* **No config files for dotman** (No `.dotrc` 🤦)
+* **No useless arguments** (single command 😎)
 * **Easy to use**
-* **Extendable ⚒, _Available as a Template_**
+* **Extendable ⚒**, _Available as a Template_
 * **Fewer Dependencies**
   - **`Git`**
-  - **`Bash`**
+  - **`Bash>=3`**
 
 
 ## 💠 Installation
@@ -72,7 +69,7 @@ sh -c "$(wget -O- https://raw.githubusercontent.com/Bhupesh-v/dotman/master/tool
 sh -c "$(http --download https://raw.githubusercontent.com/Bhupesh-v/dotman/master/tools/install.sh)"
 ```
 
-> **dotman** is installed by default in `/home/username/dotman`. Your `$HOME` directory.
+> **dotman** is installed by default in `/home/username/dotman`, your `$HOME` directory.
 
 ### Manually ❓
 
@@ -114,9 +111,7 @@ You can change these manually if any one of the info changes.
 
 🤓 **Bhupesh Varshney**
 
-- Web : [bhupesh.codes](https://bhupesh.codes)
-- Twitter : [@bhupeshimself](https://twitter.com/bhupeshimself)
-- DEV : [bhupesh](https://dev.to/bhupesh)
+[Web](https://bhupesh-v.github.io) | [Twitter: @bhupeshimself](https://twitter.com/bhupeshimself) | [DEV: bhupesh](https://dev.to/bhupesh)
 
 [![forthebadge](https://forthebadge.com/images/badges/ages-12.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
@@ -125,9 +120,13 @@ You can change these manually if any one of the info changes.
 
 Support me by giving a ⭐️ if this project helped you! or just [![Twitter URL](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2FBhupesh-V%2Fdotman%2F)](https://twitter.com/intent/tweet?url=https://github.com/Bhupesh-V/dotman&text=dotman%20via%20@bhupeshimself)
 
-<a href="https://www.patreon.com/bhupesh">
-  <img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160">
+<a href="https://liberapay.com/bhupesh/donate">
+  <img title="librepay/bhupesh" alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg" width="100">
 </a>
+<a href="https://ko-fi.com/bhupesh">
+  <img title="ko-fi/bhupesh" alt="Support on ko-fi" src="https://user-images.githubusercontent.com/34342551/88784787-12507980-d1ae-11ea-82fe-f55753340168.png" width="185">
+</a>
+
 
 ## 📝 License
 

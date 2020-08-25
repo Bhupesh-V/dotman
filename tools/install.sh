@@ -68,21 +68,20 @@ main () {
 	status_checks
 	set_alias
 
-	cat <<-'EOF'
+	# print dotman logo
+	printf "${BOLD}%s\n" ""
+	printf "%s\n" "      _       _                         "
+	printf "%s\n" "     | |     | |                        "
+	printf "%s\n" "   __| | ___ | |_ _ __ ___   __ _ _ __  "
+	printf "%s\n" "  / _\` |/ _ \| __| \`_ ' _ \ / _' | '_ \ "
+	printf "%s\n" " | (_| | (_) | |_| | | | | | (_| | | | |"
+	printf "%s\n" "  \__,_|\___/ \__|_| |_| |_|\__,_|_| |_|"
+	printf "${RESET}\n%s" ""
 
-	      _       _                         
-	     | |     | |                        
-	   __| | ___ | |_ _ __ ___   __ _ _ __  
-	  / _` |/ _ \| __| '_ ` _ \ / _` | '_ \ 
-	 | (_| | (_) | |_| | | | | | (_| | | | |
-	  \__,_|\___/ \__|_| |_| |_|\__,_|_| |_|
-	                                         .... is now installed
+	printf "\t\t\t%s\n" ".... is now installed"
+	printf "\n%s" "Run \`dotman version\` to check latest version."
+	printf "\n%s\n" "Run \`dotman\` to configure first time setup."
 
-
-	Run `dotman version` to check latest version.
-	Run `dotman` to configure first time setup.
-
-	EOF
 }
 
 # check if tput exists
