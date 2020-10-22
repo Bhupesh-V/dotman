@@ -1,5 +1,5 @@
 <p align="center">
-   <img src="https://github.com/Bhupesh-V/dotman/blob/master/assets/dotman-logo.png?raw=true" height="250">
+   <img src="https://github.com/Bhupesh-V/dotman/blob/master/assets/dotman-logo.png?raw=true" height="230">
 </p>
 
 <p align="center">
@@ -39,7 +39,7 @@
 
 ## 🌠 Features
 
-* **Single file**
+* **Single file manager** (Portable)
 * **No config files for dotman** (No `.dotrc` 🤦)
 * **No useless arguments** (single command 😎)
 * **Easy to use**
@@ -47,6 +47,14 @@
 * **Fewer Dependencies**
   - **`Git`**
   - **`Bash>=3`**
+
+
+## Wait! it's not written in a fancy language
+
+And it doesn't have to be. Why?
+
+- Your focus should be on your **dot files & scripts** rather than on a dotfiles manager or how to use it.(_Wait I forgot what was the command to push files? Is it `dt push` or `dt --push`_)
+- Creating a overly-complex solution for something simple should not be the goal.
 
 
 ## 💠 Installation
@@ -71,10 +79,10 @@ sh -c "$(http --download https://raw.githubusercontent.com/Bhupesh-v/dotman/mast
 
 > **dotman** is installed by default in `/home/username/dotman`, your `$HOME` directory.
 
-### Manually ❓
+### Manually (you ok ?)
 
 1. Just grab **dotman.sh** from [Releases 🔼](https://github.com/Bhupesh-V/dotman/releases) and store it anywhere on your system.
-2. Change file mode to be 🏃 executable.
+2. Change file permissions to be 🏃 executable.
   ```bash
   chmod +x dotman.sh
   ```
@@ -86,7 +94,6 @@ sh -c "$(http --download https://raw.githubusercontent.com/Bhupesh-v/dotman/mast
   ```bash
   ./dotman.sh
   ```
-
 
 ## Usage
 
@@ -107,13 +114,13 @@ dotman exports 2 variables in your default shell config (`bashrc`, `zshrc` etc):
 
 You can change these manually if any one of the info changes.
 
+
 ## Author
 
 🤓 **Bhupesh Varshney**
 
 [Web](https://bhupesh-v.github.io) | [Twitter: @bhupeshimself](https://twitter.com/bhupeshimself) | [DEV: bhupesh](https://dev.to/bhupesh)
 
-[![forthebadge](https://forthebadge.com/images/badges/ages-12.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
 
 ## ☺️ Show your support
