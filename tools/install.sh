@@ -41,7 +41,7 @@ status_checks() {
 		# git clone $REMOTE --branch $BRANCH --single-branch $HOME
 		latest_tag=$(git ls-remote --ref -t --sort='-v:refname' "$REMOTE" | head -n 1)
 		# ##*/ retains the part after last /
-		git -C "$HOME" clone -b "${latest_tag##*/}" --branch "$BRANCH" --single-branch --depth 1 "$REMOTE"
+		git -C "$HOME" clone -b "${latest_tag##*/}" --branch "$BRANCH" --single-branch "$REMOTE"
 		if [ -d "$DOTMAN" ]; then
 			echo "${BOLD}[✔️ ] Successfully cloned d○tman${RESET}"
 		else
