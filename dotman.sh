@@ -87,7 +87,7 @@ find_dotfiles() {
 
 add_env() {
 	# export environment variables
-	printf "\n%s" "\nExporting env variables DOT_DEST & DOT_REPO ..."
+	printf "\n%s\n" "Exporting env variables DOT_DEST & DOT_REPO ..."
 
 	current_shell=$(basename "$SHELL")
 	if [[ $current_shell == "zsh" ]]; then
@@ -102,11 +102,11 @@ add_env() {
 		echo "Consider exporting them manually".
 		exit 1
 	fi
-	echo "Configuration for SHELL: ${BOLD}$current_shell${RESET} has been updated."
+	printf "\n%s" "Configuration for SHELL: ${BOLD}$current_shell${RESET} has been updated."
 }
 
 goodbye() {
-	printf "\a\n\n%s\n" "${BOLD}Thanks for using d○tman 🖖.${RESET}"
+	printf "\a\n\n%s\n" "${BOLD}Thanks for using dotman 🖖.${RESET}"
 	printf "\n%s%s" "${BOLD}Follow ${BG_AQUA}${FG_BLACK}@bhupeshimself${RESET}" "${BOLD} on Twitter "
 	printf "%s\n" "for more updates.${RESET}"
 	printf "%s\n" "${BOLD}Report Bugs 🐛 @ ${UL}https://github.com/Bhupesh-V/dotman/issues${RUL}${RESET}"
@@ -180,7 +180,7 @@ clone_dotrepo (){
 	DOT_REPO=$2
 	
 	if git -C "${HOME}/${DOT_DEST}" clone "${DOT_REPO}"; then
-		if [[ -z ${DOT_REPO} && -z ${DOT_DEST} ]]; then
+		if [[ $DOT_REPO && $DOT_DEST ]]; then
 			add_env "$DOT_REPO" "$DOT_DEST"
 		fi
 		printf "\n%s" "[✔️ ] dotman successfully configured"
@@ -192,7 +192,7 @@ clone_dotrepo (){
 }
 
 initial_setup() {
-	printf "\n\n%s" "First time use 🔥, Set Up ${BOLD}d○tman${RESET}"
+	printf "\n\n%s" "First time use 🔥, Set Up ${BOLD}dotman${RESET}"
 	printf "%s\n" "...................................."
 	read -p "➤ Enter dotfiles repository URL : " -r DOT_REPO
 	read -p "➤ Where should I clone ${BOLD}$(basename "${DOT_REPO}")${RESET} (${HOME}/..): " -r DOT_DEST
@@ -252,7 +252,7 @@ if [[ $1 == "version" || $1 == "--version" || $1 == "-v" ]]; then
 	if [[ -d "$HOME/dotman" ]]; then
 		latest_tag=$(git -C "$HOME/dotman" describe --tags --abbrev=0)
 		latest_tag_push=$(git -C "$HOME/dotman" log -1 --format=%ai "${latest_tag}")
-		echo "${BOLD}d○tman ${latest_tag} ${RESET}"
+		echo "${BOLD}dotman ${latest_tag} ${RESET}"
 		echo "Released on: ${BOLD}${latest_tag_push}${RESET}"
 	else
 		echo "${BOLD}dotman ${VERSION}${RESET}"
