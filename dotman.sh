@@ -65,7 +65,7 @@ repo_check(){
 	if [[ -d ${HOME}/${DOT_DEST}/${DOT_REPO_NAME} ]]; then
 	    printf "\n%s\n" "Found ${BOLD}${DOT_REPO_NAME}${RESET} as dotfile repo in ${BOLD}~/${DOT_DEST}/${RESET}"
 	else
-	    printf "\n\n%s" "[❌] ${BOLD}${DOT_REPO_NAME}${RESET} not present inside path ${BOLD}${HOME}/${DOT_DEST}${RESET}"
+	    printf "\n\n%s\n" "[❌] ${BOLD}${DOT_REPO_NAME}${RESET} not present inside path ${BOLD}${HOME}/${DOT_DEST}${RESET}"
 		read -p "Should I clone it ? [Y/n]: " -n 1 -r USER_INPUT
 		USER_INPUT=${USER_INPUT:-y}
 		case $USER_INPUT in
