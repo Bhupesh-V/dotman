@@ -44,6 +44,8 @@ status_checks() {
 		git -C "$HOME" clone -b "${latest_tag##*/}" --branch "$BRANCH" --single-branch "$REMOTE"
 		if [ -d "$DOTMAN" ]; then
 			echo "${BOLD}[✔️ ] Successfully cloned d○tman${RESET}"
+			# switch to stable version
+			git -C "$DOTMAN" checkout "$latest_tag" -b "$BRANCH"
 		else
 			echo "${BOLD}[❌] Error cloning d○tman${RESET}"
 		fi
