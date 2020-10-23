@@ -10,7 +10,7 @@
     <img alt="License: MIT" src="https://img.shields.io/github/license/Bhupesh-V/dotman" />
   </a>
   <a href="">
-    <img alt="platform: linux and macos" src="https://img.shields.io/badge/platform-Linux%7CMacOS-blue">
+    <img alt="platform: linux and macos" src="https://img.shields.io/badge/platform-GNU/Linux %7C MacOS-blue">
   </a>
   <a href="https://github.com/ellerbrock/open-source-badges">
     <img alt="bash love" src="https://raw.githubusercontent.com/ellerbrock/open-source-badges/master/badges/bash-v1/bash.png">
