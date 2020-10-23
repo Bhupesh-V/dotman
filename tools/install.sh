@@ -26,13 +26,15 @@ BRANCH=${BRANCH:-master}
 REMOTE=${REMOTE:-https://github.com/${REPO}.git}
 
 
-status_checks() {
+status_check() {
 	if [ -d "$DOTMAN" ]; then
 		printf "\n\t%s\n" "You already have ${BOLD}d○tman${RESET} 🖖 installed."
 		printf "\n\t%s\n\n" "You'll need to remove '$DOTMAN' if you want to reinstall."
 		exit 0
 	fi
+}
 
+clone_dotman() {
 	if ! command -v git > /dev/null 2>&1; then
 		printf "\n%s\n" "${BOLD}Can't work without Git 😞${RESET}"
 		exit 1
@@ -47,12 +49,17 @@ status_checks() {
 			# switch to stable version
 			git -C "$DOTMAN" checkout "$latest_tag" -b "$BRANCH"
 		else
-			echo "${BOLD}[❌] Error cloning d○tman${RESET}"
+			echo "${BOLD}[❌] Error cloning dotman${RESET}"
 		fi
 	fi
 }
 
 set_alias(){
+	if alias dotman > /dev/null 2>&1; then
+		printf "\n%s\n" "${BOLD}[✔️ ]dotman is already aliased${RESET}"
+		return
+	fi
+
 	if [ -f "$HOME"/.bash_aliases ]; then
 		echo "alias dotman='$HOME/dotman/dotman.sh'" >> "$HOME"/.bash_aliases
 	elif [ "$(basename "SHELL")" = "zsh" ]; then
@@ -60,16 +67,17 @@ set_alias(){
 	elif [ "$(basename "SHELL")" = "bash" ]; then
 		echo "alias dotman='$HOME/dotman/dotman.sh'" >> "$HOME"/.bashrc
 	else
-		echo "Couldn't set alias to dotman: ${BOLD}$HOME/dotman/dotman.sh${RESET}"
+		echo "Couldn't set alias for dotman: ${BOLD}$HOME/dotman/dotman.sh${RESET}"
 		echo "Consider adding it manually".
 		exit 1
 	fi
-	echo "${BOLD}[✔️ ] Set alias for d○tman${RESET}"
+	echo "${BOLD}[✔️ ] Set alias for dotman${RESET}"
 }
 
 main () {
 
-	status_checks
+	status_check
+	clone_dotman
 	set_alias
 
 	# print dotman logo
