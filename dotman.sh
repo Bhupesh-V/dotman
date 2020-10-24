@@ -4,7 +4,7 @@
 
 IFS=$'\n'
 
-VERSION="v0.2.0"
+VERSION="v0.3.0"
 
 # check if tput exists
 if ! command -v tput &> /dev/null; then
@@ -86,17 +86,16 @@ find_dotfiles() {
 }
 
 add_env() {
+	[[ "$DOT_DEST" && "$DOT_REPO" ]] && return
 	# export environment variables
 	printf "\n%s\n" "Exporting env variables DOT_DEST & DOT_REPO ..."
 
 	current_shell=$(basename "$SHELL")
 	if [[ $current_shell == "zsh" ]]; then
-		echo "export DOT_REPO=$1" >> "$HOME"/.zshrc
-		echo "export DOT_DEST=$2" >> "$HOME"/.zshrc
+		echo "export DOT_REPO=$1 DOT_DEST=$2" >> "$HOME"/.zshrc
 	elif [[ $current_shell == "bash" ]]; then
 		# assume we have a fallback to bash
-		echo "export DOT_REPO=$1" >> "$HOME"/.bashrc
-		echo "export DOT_DEST=$2" >> "$HOME"/.bashrc
+		echo "export DOT_REPO=$1 DOT_DEST=$2" >> "$HOME"/.bashrc
 	else
 		echo "Couldn't export ${BOLD}DOT_REPO=$1${RESET} and ${BOLD}DOT_DEST=$2${RESET}"
 		echo "Consider exporting them manually".
@@ -194,7 +193,7 @@ clone_dotrepo (){
 }
 
 initial_setup() {
-	printf "\n\n%s" "First time use 🔥, Set Up ${BOLD}dotman${RESET}"
+	printf "\n\n%s\n" "First time use 🔥, Set Up ${BOLD}dotman${RESET}"
 	printf "%s\n" "...................................."
 	read -p "➤ Enter dotfiles repository URL : " -r DOT_REPO
 	read -p "➤ Where should I clone ${BOLD}$(basename "${DOT_REPO}")${RESET} (${HOME}/..): " -r DOT_DEST
@@ -203,6 +202,7 @@ initial_setup() {
 	if [[ -d "$HOME/$DOT_DEST" ]]; then
 		printf "\n%s\r\n" "${BOLD}Calling 📞 Git ... ${RESET}"
 		clone_dotrepo "$DOT_DEST" "$DOT_REPO"
+		printf "\n%s\n" "Open a new terminal or source your shell config"
 	else
 		printf "\n%s" "[❌]${BOLD}$DOT_DEST${RESET} Not a Valid directory"
 		exit 1

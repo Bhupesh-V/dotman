@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.0] - Oct , 2020
+
+### Changed
+- How changes are pulled, dotman no longer pulls from `master` branch, your default branch is automatically determined. By **[Prajeshpuri](https://github.com/Bhupesh-V/dotman/pull/18)** 🙌
+- Switch to stable version on install through `install.sh`.
+- Other minor improvements.
+
+### Fixed
+- First time setup issues.
+- _"No names found, cannot describe anything."_ error while running `dotman version`.
+- Double exported aliases when installing dotman again.
+
+
 ## [0.2.0] - Aug 25, 2020
 
 ### Changed
