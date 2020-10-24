@@ -166,6 +166,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/fpitters"><img src="https://avatars2.githubusercontent.com/u/1129222?v=4" width="100px;" alt=""/><br /><sub><b>fpitters</b></sub></a><br /><a href="https://github.com/Bhupesh-V/dotman/issues?q=author%3Afpitters" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/tadomaitis"><img src="https://avatars3.githubusercontent.com/u/20560225?v=4" width="100px;" alt=""/><br /><sub><b>Thiago Adomaitis</b></sub></a><br /><a href="https://github.com/Bhupesh-V/dotman/issues?q=author%3Atadomaitis" title="Bug reports">🐛</a> <a href="https://github.com/Bhupesh-V/dotman/commits?author=tadomaitis" title="Code">💻</a></td>
     <td align="center"><a href="http://scott.menzer.org"><img src="https://avatars1.githubusercontent.com/u/624392?v=4" width="100px;" alt=""/><br /><sub><b>Scott</b></sub></a><br /><a href="https://github.com/Bhupesh-V/dotman/issues?q=author%3Asmenzer" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://prajeshpuri.tech/"><img src="https://avatars3.githubusercontent.com/u/34602781?v=4" width="100px;" alt=""/><br /><sub><b>Prajeshpuri</b></sub></a><br /><a href="https://github.com/Bhupesh-V/dotman/commits?author=Prajeshpuri" title="Code">💻</a></td>
   </tr>
 </table>
 
