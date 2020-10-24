@@ -117,7 +117,9 @@ dot_pull() {
 	printf "\n%s\n" "${BOLD}Pulling dotfiles ...${RESET}"
 	dot_repo="${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")"
 	printf "\n%s\n" "Pulling changes in $dot_repo"
-	git -C "$dot_repo" pull origin master
+	GET_BRANCH=$(git remote show origin | awk '/HEAD/ {print $3}')
+	printf "\n%s\n" "Pulling from ${BOLD}${GET_BRANCH}" 
+	git -C "$dot_repo" pull origin ${GET_BRANCH}
 }
 
 diff_check() {
