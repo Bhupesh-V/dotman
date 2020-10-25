@@ -79,10 +79,11 @@ sh -c "$(http --download https://raw.githubusercontent.com/Bhupesh-v/dotman/mast
 
 > **dotman** is installed by default in `/home/username/dotman`, your `$HOME` directory.
 
+
 Now run **`dotman`** for 1st time set-up.
 
 1. Enter repository URL (without `.git`).
-2. Enter folder name to where this repo be cloned (relative to `/home/username/`).
+2. Specify folder you want to clone the dotfile repo to (relative to `/home/username/`).
 3. Open up new terminal 🚀.
 
 ### Manually (you ok ?)
@@ -98,7 +99,7 @@ Now run **`dotman`** for 1st time set-up.
   ```
 4. Run **dotman**.
   ```bash
-  ./dotman.sh
+  dotman.sh
   ```
 
 ## Usage

@@ -56,7 +56,7 @@ clone_dotman() {
 
 set_alias(){
 	if alias dotman > /dev/null 2>&1; then
-		printf "\n%s\n" "${BOLD}[✔️ ]dotman is already aliased${RESET}"
+		printf "\n%s\n" "${BOLD}[✔️ ] dotman is already aliased${RESET}"
 		return
 	fi
 

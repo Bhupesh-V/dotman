@@ -98,7 +98,7 @@ add_env() {
 		echo "export DOT_REPO=$1 DOT_DEST=$2" >> "$HOME"/.bashrc
 	else
 		echo "Couldn't export ${BOLD}DOT_REPO=$1${RESET} and ${BOLD}DOT_DEST=$2${RESET}"
-		echo "Consider exporting them manually".
+		echo "Consider exporting them manually."
 		exit 1
 	fi
 	printf "\n%s" "Configuration for SHELL: ${BOLD}$current_shell${RESET} has been updated."

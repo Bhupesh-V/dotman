@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.3.0] - Oct , 2020
+## [0.3.0] - Oct 25, 2020
 
 ### Changed
 - How changes are pulled, dotman no longer pulls from `master` branch, your default branch is automatically determined. By **[Prajeshpuri](https://github.com/Bhupesh-V/dotman/pull/18)** 🙌
