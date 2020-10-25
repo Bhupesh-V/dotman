@@ -34,8 +34,9 @@
 ## Demo 🔥
 
 <p align="center">
-  <img alt="dotman-demo" src="https://user-images.githubusercontent.com/34342551/87691530-4d16e280-c7a8-11ea-8f5e-77f50b9635c3.gif">
+  <img alt="dotman-demo" src="https://user-images.githubusercontent.com/34342551/97109739-ee43fc00-16fa-11eb-8ed2-3a69ad7073b3.gif">
 </p>
+
 
 ## 🌠 Features
 
