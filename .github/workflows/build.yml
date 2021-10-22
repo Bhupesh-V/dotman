@@ -19,6 +19,6 @@ jobs:
     - name: Syntax Testing
       # -n : ead  commands  but  do  not  execute  them.  This may be used to check a shell script for syntax errors.  This is ignored by interactive shells.
       run : |
-          bash -n dotman.sh
-          sh -n tools/install.sh          
+          bash -n bashTests.sh
+          sh -n tools/install.sh
     
