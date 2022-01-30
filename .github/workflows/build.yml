@@ -9,16 +9,25 @@ on:
     branches: [ master ]
 
 jobs:
-  linux-test:
-    name: Linux Test
+  test:
+    name: ShellCheck
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@master
     - name: Run ShellCheck
       uses: ludeeus/action-shellcheck@0.5.0
-    - name: Syntax Testing
-      # -n : ead  commands  but  do  not  execute  them.  This may be used to check a shell script for syntax errors.  This is ignored by interactive shells.
-      run : |
-          bash -n dotman.sh
-          sh -n tools/install.sh          
-    
+  bash:
+    name: BashTesting
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        bash: ["3.0", "4.0", "5.0"]
+        cmd: ["bash -n dotman.sh", "sh -n tools/install.sh"]
+    steps:          
+    - uses: actions/checkout@master
+    - name: "Test ${{ matrix.cmd }} with bash ${{ matrix.bash }}"
+      uses: addnab/docker-run-action@v3
+      with:
+        image: bash:${{ matrix.bash }}
+        options: -v ${{ github.workspace }}:/test -w /test
+        run: ${{ matrix.cmd }}
