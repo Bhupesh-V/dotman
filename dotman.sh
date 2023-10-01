@@ -121,7 +121,7 @@ dot_pull() {
 	git -C "$dot_repo" pull origin "${GET_BRANCH}"
 }
 
-diff_check() {
+dot_repo_status() {
 
 	[[ -z $1 ]] && local file_arr
 
@@ -147,8 +147,8 @@ diff_check() {
 	[ ${#file_arr} == 0 ] && printf "\n%s\n" "${BOLD}No Changes in dotfiles.${RESET}";return
 }
 
-show_diff_check() {
-	diff_check "show"
+show_dot_repo_status() {
+	dot_repo_status "show"
 }
 
 dot_push() {
@@ -212,7 +212,7 @@ initial_setup() {
 manage() {
 	while :
 	do
-		printf "\n%s" "[${BOLD}1${RESET}] Show diff"
+		printf "\n%s" "[${BOLD}1${RESET}] Show dotfile repo status"
 		printf "\n%s" "[${BOLD}2${RESET}] Push changed dotfiles"
 		printf "\n%s" "[${BOLD}3${RESET}] Pull latest changes"
 		printf "\n%s" "[${BOLD}4${RESET}] List all dotfiles"
@@ -221,7 +221,7 @@ manage() {
 		# Default choice is [1], See Parameter Expansion
 		USER_INPUT=${USER_INPUT:-1}
 		case $USER_INPUT in
-			[1]* ) show_diff_check;;
+			[1]* ) show_dot_repo_status;;
 			[2]* ) dot_push;;
 			[3]* ) dot_pull;;
 			[4]* ) find_dotfiles;;
