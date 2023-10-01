@@ -124,6 +124,8 @@ dot_pull() {
 dot_repo_status() {
 
 	[[ -z $1 ]] && local file_arr
+	
+	git -C "$DOT_REPO" status
 
 	# dotfiles in repository
 	readarray -t dotfiles_repo < <( find "${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")" -maxdepth 1 -name ".*" -type f )
