@@ -4,14 +4,14 @@ name: build
 # events but only for the master branch
 on:
   push:
-    branches: [ master ]
+    branches: [ master, feature/* ]
   pull_request:
     branches: [ master ]
 
 jobs:
-  linux-test:
+  shellcheck:
     name: Linux Test
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@master
     - name: Run ShellCheck
@@ -21,4 +21,25 @@ jobs:
       run : |
           bash -n dotman.sh
           sh -n tools/install.sh          
-    
+  bash:
+    name: bash-matrix
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        bash: [ 
+          "3.0",
+          "3.1", 
+          "4.4", 
+          "5.1",
+          "5.2"
+        ]
+    steps:
+      - uses: actions/checkout@master
+      - name: matrix test ${{ matrix.bash }}
+        uses: addnab/docker-run-action@v3
+        with:
+          node-version: bash:${{ matrix.bash }}
+          options: -v ${{ github.workspace }}:/test -w /test
+          run: |
+            bash -n dotman.sh
+            sh -n tools/install.sh          
