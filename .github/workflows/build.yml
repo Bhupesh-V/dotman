@@ -38,8 +38,8 @@ jobs:
       - name: matrix test ${{ matrix.bash }}
         uses: addnab/docker-run-action@v3
         with:
-          node-version: bash:${{ matrix.bash }}
-          options: -v ${{ github.workspace }}:/test -w /test
+          image: bash:${{ matrix.bash }}
+          options: -v ${{ github.workspace }}:/work -w /work
           run: |
             bash -n dotman.sh
             sh -n tools/install.sh          
