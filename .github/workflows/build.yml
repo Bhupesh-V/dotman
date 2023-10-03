@@ -1,5 +1,4 @@
 name: build
-
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
 on:
@@ -7,20 +6,14 @@ on:
     branches: [ master, feature/* ]
   pull_request:
     branches: [ master ]
-
 jobs:
   shellcheck:
-    name: Linux Test
+    name: shellcheck
     runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@master
     - name: Run ShellCheck
-      uses: ludeeus/action-shellcheck@0.5.0
-    - name: Syntax Testing
-      # -n : ead  commands  but  do  not  execute  them.  This may be used to check a shell script for syntax errors.  This is ignored by interactive shells.
-      run : |
-          bash -n dotman.sh
-          sh -n tools/install.sh          
+      uses: ludeeus/action-shellcheck@2.0.0        
   bash:
     name: bash-matrix
     runs-on: ubuntu-22.04
@@ -28,8 +21,13 @@ jobs:
       matrix:
         bash: [ 
           "3.0",
-          "3.1", 
-          "4.4", 
+          "3.1",
+          "3.2",
+          "4.0",
+          "4.1",
+          "4.2",
+          "4.3",
+          "4.4",
           "5.1",
           "5.2"
         ]
