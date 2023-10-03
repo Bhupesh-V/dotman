@@ -33,11 +33,15 @@ jobs:
         ]
     steps:
       - uses: actions/checkout@master
-      - name: matrix test ${{ matrix.bash }}
+      - name: test tools/install.sh with bash ${{ matrix.bash }}
         uses: addnab/docker-run-action@v3
         with:
           image: bash:${{ matrix.bash }}
           options: -v ${{ github.workspace }}:/work -w /work
-          run: |
-            bash -n dotman.sh
-            sh -n tools/install.sh          
+          run: sh -n tools/install.sh          
+      - name: test dotman.sh with bash ${{ matrix.bash }}
+        uses: addnab/docker-run-action@v3
+        with:
+          image: bash:${{ matrix.bash }}
+          options: -v ${{ github.workspace }}:/work -w /work
+          run: bash -n dotman.sh
