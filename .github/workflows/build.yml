@@ -21,4 +21,12 @@ jobs:
       run : |
           bash -n dotman.sh
           sh -n tools/install.sh          
-    
+      - name: Test on Bash 3
+        run: |
+            docker run -v "$PWD:/mnt" bash:3 bash -n /mnt/dotman.sh
+      - name: Test on Bash 4
+        run: |
+            docker run -v "$PWD:/mnt" bash:4 bash -n /mnt/dotman.sh
+      - name: Test on Bash 5
+        run: |
+            docker run -v "$PWD:/mnt" bash:5 bash -n /mnt/dotman.sh 
