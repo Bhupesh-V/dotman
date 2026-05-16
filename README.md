@@ -112,6 +112,14 @@ dotman
 ```
 Leave the rest to it.
 
+### Commands
+
+| Command | Description |
+|---------|-------------|
+| `dotman` | Run the interactive dotfiles manager |
+| `dotman version` | Show current version |
+| `dotman update` | Update dotman to the latest version |
+
 
 ## What else 👀
 
