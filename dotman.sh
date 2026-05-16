@@ -262,5 +262,15 @@ if [[ $1 == "version" || $1 == "--version" || $1 == "-v" ]]; then
 	exit
 fi
 
+if [[ $1 == "update" || $1 == "--update" || $1 == "-u" ]]; then
+	if [[ -f "$HOME/dotman/tools/update.sh" ]]; then
+		sh "$HOME/dotman/tools/update.sh"
+	else
+		echo "${BOLD}[❌] Update script not found${RESET}"
+		echo "Try reinstalling dotman."
+	fi
+	exit
+fi
+
 intro
 init_check
