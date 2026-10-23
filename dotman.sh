@@ -123,7 +123,7 @@ dot_pull() {
 
 diff_check() {
 
-	[[ -z $1 ]] && local file_arr
+	file_arr=()
 
 	# dotfiles in repository
 	readarray -t dotfiles_repo < <( find "${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")" -maxdepth 1 -name ".*" -type f )
@@ -151,29 +151,47 @@ show_diff_check() {
 	diff_check "show"
 }
 
+
 dot_push() {
-	diff_check
-	if [[ ${#file_arr} != 0 ]]; then
-		printf "\n%s\n" "${BOLD}Following dotfiles changed${RESET}"
-		for file in "${file_arr[@]}"; do
-			echo "$file"
-			cp "${HOME}/$file" "${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")"
-		done
+    diff_check
 
-		dot_repo="${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")"
-		git -C "$dot_repo" add -A
+    if [[ ${#file_arr} != 0 ]]; then
+        printf "\n%s\n" "${BOLD}Following dotfiles changed${RESET}"
 
-		echo "${BOLD}Enter Commit Message (Ctrl + d to save): ${RESET}"
-		commit=$(</dev/stdin)
-		printf "\n"
-		git -C "$dot_repo" commit -m "$commit"
+        # Display changed files without modifying the repository.
+        for file in "${file_arr[@]}"; do
+            echo "$file"
+        done
 
-		# Run Git Push
-		git -C "$dot_repo" push
-	else
-		return
-	fi
+        # Get the commit message before making any changes.
+        echo "${BOLD}Enter Commit Message (Ctrl + d to save): ${RESET}"
+        commit=$(cat)
+        printf "\n"
+
+        # Treat an empty message as cancellation.
+        if [[ -z "$commit" ]]; then
+            printf "%s\n" "${BOLD}No commit message entered. Aborting.${RESET}"
+            return 1
+        fi
+
+        dot_repo="${HOME}/${DOT_DEST}/$(basename "${DOT_REPO}")"
+
+        # Only modify the repository after message input is complete.
+        for file in "${file_arr[@]}"; do
+            cp "${HOME}/$file" "$dot_repo"
+        done
+
+        git -C "$dot_repo" add -A
+
+        # Push only if the commit succeeds.
+        if git -C "$dot_repo" commit -m "$commit"; then
+            git -C "$dot_repo" push
+        fi
+    else
+        return
+    fi
 }
+
 
 clone_dotrepo (){
 	# clone the repo in the destination directory
